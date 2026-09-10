@@ -26,7 +26,6 @@ body{margin:0;background:var(--desk);color:var(--ink);
 .masthead .book{font-size:13px;color:var(--sub);margin:0 0 4px}
 .masthead h1{font-size:34px;line-height:1.25;margin:0;font-weight:700;letter-spacing:.02em}
 .masthead .lead{margin:8px 0 0;color:var(--ink-2);max-width:42em}
-.masthead .actions{display:flex;gap:8px}
 .btn{font:inherit;font-size:13px;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer}
 .btn:hover{border-color:var(--ink-2)}
 .btn:focus-visible,.seg button:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible,.del:focus-visible,.add:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
@@ -191,10 +190,6 @@ body{margin:0;background:var(--desk);color:var(--ink);
       <h1>スコアリングシート</h1>
       <p class="lead">自社ローンの条件と、ヒアリングした収入・他社借入を入れると、そのローンに耐えられるかをスコアで判定します。判定の根拠は下の「計算の中身」でそのまま説明できます。</p>
     </div>
-    <div class="actions">
-      <button type="button" class="btn" id="btnSample">サンプル値を入れる</button>
-      <button type="button" class="btn" id="btnClear">入力をクリア</button>
-    </div>
   </header>
 
   <div class="grid">
@@ -324,8 +319,8 @@ body{margin:0;background:var(--desk);color:var(--ink);
     </section>
 
     <section class="card">
-      <h2>年利の目安<span class="draft">本番では削除予定</span></h2>
-      <p class="desc">他社借入の種類を選んだときに入る初期値です。2026年時点の一般的な水準をもとにした仮置きで、判定には使わず、下の参考値（推定残高・利息）の計算にだけ使います。</p>
+      <h2>年利の目安</h2>
+      <p class="desc">他社借入の種類を選んだときに入る初期値です。2026年時点の一般的な水準をもとにしています。判定には使わず、下の参考値（推定残高・利息）の計算にだけ使います。</p>
       <table class="rates"><thead><tr><th>種類</th><th>一般的な幅</th><th style="text-align:right">初期値</th></tr></thead><tbody id="rateTable"></tbody></table>
       <p class="rates-note">お客さまの契約書や利用明細で実際の金利がわかる場合は、そちらを入れてください。</p>
 
@@ -367,7 +362,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
     return { principal, monthly, first, fee: split - principal, split, grand: split + down, valid: down === 0 || down >= first, annual };
   }
 
-  // ───── 他社借入の種類と年利の目安（本番では削除予定）─────
+  // ───── 他社借入の種類と年利の目安 ─────
   const DEBT_TYPES = [
     { key: 'sarakin',   name: '消費者金融',                 rate: 18.0, range: '3.0〜18.0%', note: '大手の上限は17.8〜18.0%。元本10万〜100万円未満の法定上限が18%' },
     { key: 'bankcard',  name: '銀行カードローン',                     rate: 14.5, range: '1.5〜15.0%', note: '少額の枠ほど上限寄り。2026年は利上げで引き上げが続く' },
@@ -389,11 +384,8 @@ body{margin:0;background:var(--desk);color:var(--ink);
   ];
   const RM_NG_INCOME = 1450000;
 
-  const SAMPLE = {
-    price: 902000, down: 0, times: 60, income: 3690360, household: 1, housing: 'none',
-    debts: []
-  };
-  const EMPTY = { price: 902000, down: 0, times: 60, income: '', household: 1, housing: 'none', debts: [] };
+  // 初期値
+  const DEFAULTS = { price: 902000, down: 0, times: 60, income: 0, household: 1, housing: 'with', debts: [] };
 
   // ───── ユーティリティ ─────
   const $ = id => document.getElementById(id);
@@ -403,12 +395,25 @@ body{margin:0;background:var(--desk);color:var(--ink);
   const toHalf = s => String(s).replace(/[０-９．，]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
   const parse = s => { const t = toHalf(s).replace(/[,\s円%]/g, ''); if (t === '') return null; const v = Number(t); return Number.isFinite(v) ? v : null; };
   const fmtInput = (v, comma) => (v === null || v === undefined || v === '') ? '' : (comma ? Number(v).toLocaleString('ja-JP') : String(v));
-  function commaBehavior(el) {
-    el.addEventListener('focus', () => { const v = parse(el.value); el.value = v === null ? '' : String(v); });
-    el.addEventListener('blur', () => { const v = parse(el.value); el.value = fmtInput(v, true); });
+  // 入力中も3桁カンマを入れる（カーソル位置は数字の並びで復元）
+  function liveComma(el) {
+    el.addEventListener('input', () => {
+      const raw = toHalf(el.value);
+      const caret = el.selectionStart ?? raw.length;
+      const digitsBefore = raw.slice(0, caret).replace(/\D/g, '').length;
+      const allDigits = raw.replace(/\D/g, '');
+      const digits = allDigits.replace(/^0+(?=\d)/, '');
+      const stripped = allDigits.length - digits.length;
+      const formatted = digits ? Number(digits).toLocaleString('ja-JP') : '';
+      el.value = formatted;
+      const target = Math.max(0, digitsBefore - stripped);
+      let pos = 0, seen = 0;
+      while (pos < formatted.length && seen < target) { if (/\d/.test(formatted[pos])) seen++; pos++; }
+      if (document.activeElement === el) el.setSelectionRange(pos, pos);
+    });
   }
 
-  const state = { household: 1, housing: 'none', debts: [] };
+  const state = { household: 1, housing: 'with', debts: [] };
   let seq = 0;
 
   // 支払回数
@@ -420,7 +425,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
   }
   timesSel.addEventListener('change', render);
 
-  ['price', 'down', 'income'].forEach(id => { commaBehavior($(id)); $(id).addEventListener('input', render); });
+  ['price', 'down', 'income'].forEach(id => { liveComma($(id)); $(id).addEventListener('input', render); });
 
   function bindSeg(id, key, cast) {
     $(id).querySelectorAll('button').forEach(b => b.addEventListener('click', () => { state[key] = cast(b.dataset.v); render(); }));
@@ -467,7 +472,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
       });
       row.querySelectorAll('input').forEach(inp => {
         const k = inp.dataset.k;
-        if (k === 'monthly') commaBehavior(inp);
+        if (k === 'monthly') liveComma(inp);
         inp.addEventListener('input', () => { d[k] = parse(inp.value) ?? ''; render(); });
       });
       d._foot = row.querySelector('[data-foot]');
@@ -486,8 +491,6 @@ body{margin:0;background:var(--desk);color:var(--ink);
     o.debts.forEach(d => { const t = typeOf(d.type); state.debts.push({ id: ++seq, type: t.key, monthly: d.monthly, years: d.years, rate: d.rate ?? t.rate }); });
     buildDebts(); render();
   }
-  $('btnSample').addEventListener('click', () => load(SAMPLE));
-  $('btnClear').addEventListener('click', () => load(EMPTY));
 
   // ───── 計算 ─────
   function compute() {
@@ -659,7 +662,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
   // 年利の目安テーブル
   $('rateTable').innerHTML = DEBT_TYPES.map(t => `<tr><td>${t.name}<small>${t.note}</small></td><td>${t.range}</td><td class="r">${t.rate.toFixed(1)}%</td></tr>`).join('');
 
-  load(SAMPLE);
+  load(DEFAULTS);
   window.__scoring = { compute, rmCheck, load, jishaLoan };
 })();
 </script>
