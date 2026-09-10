@@ -9,89 +9,103 @@
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --desk:#EBEEF2;
-  --paper:#FFFFFF;
-  --ink:#16213A;
-  --ink-2:#3C4659;
-  --sub:#667085;
-  --rule:#D5DBE3;
-  --rule-soft:#E8ECF1;
-  --focus:#2B4C8C;
-  --shu:#C23A1E;       /* 朱：不合格 */
-  --shu-bg:#FBEDEA;
-  --moss:#1D7050;      /* 可：基準クリア */
-  --moss-bg:#E7F3EC;
-  --amber:#9A6212;     /* 懸念 */
-  --amber-bg:#FBF2E1;
+  --desk:#EBEEF2; --paper:#FFFFFF; --ink:#16213A; --ink-2:#3C4659; --sub:#667085;
+  --rule:#D5DBE3; --rule-soft:#E8ECF1; --focus:#2B4C8C;
+  --shu:#C23A1E; --shu-bg:#FBEDEA; --moss:#1D7050; --moss-bg:#E7F3EC; --amber:#9A6212; --amber-bg:#FBF2E1;
   --radius:6px;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;background:var(--desk);color:var(--ink);
+body{margin:0;background:var(--desk);color:var(--ink);
   font-family:"BIZ UDPGothic","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic UI",Meiryo,sans-serif;
-  font-size:15px;line-height:1.7;
-  font-variant-numeric:tabular-nums;
-}
+  font-size:15px;line-height:1.7;font-variant-numeric:tabular-nums}
 .wrap{max-width:1140px;margin:0 auto;padding:40px 24px 64px}
 
-/* ── ヘッダー ── */
 .masthead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;
   padding-bottom:20px;border-bottom:2px solid var(--ink);margin-bottom:28px}
 .masthead .book{font-size:13px;color:var(--sub);margin:0 0 4px}
 .masthead h1{font-size:34px;line-height:1.25;margin:0;font-weight:700;letter-spacing:.02em}
-.masthead .lead{margin:8px 0 0;color:var(--ink-2);max-width:40em}
+.masthead .lead{margin:8px 0 0;color:var(--ink-2);max-width:42em}
 .masthead .actions{display:flex;gap:8px}
-.btn{font:inherit;font-size:13px;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--rule);
-  background:var(--paper);color:var(--ink);cursor:pointer}
+.btn{font:inherit;font-size:13px;padding:7px 14px;border-radius:var(--radius);border:1px solid var(--rule);background:var(--paper);color:var(--ink);cursor:pointer}
 .btn:hover{border-color:var(--ink-2)}
-.btn:focus-visible,.seg button:focus-visible,.chip:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.btn:focus-visible,.seg button:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible,.del:focus-visible,.add:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
-/* ── レイアウト ── */
-.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:24px;align-items:start}
+.grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:24px;align-items:start}
 @media (max-width:900px){.grid{grid-template-columns:1fr}}
-
 .card{background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius)}
 
-/* ── 入力（審査票） ── */
+/* 入力 */
 .form{padding:8px 28px 24px}
-.group{padding:20px 0 6px;border-bottom:1px solid var(--rule-soft)}
+.group{padding:20px 0 10px;border-bottom:1px solid var(--rule-soft)}
 .group:last-child{border-bottom:none}
-.group h2{font-size:15px;margin:0 0 12px;font-weight:700;color:var(--ink)}
-.field{display:grid;grid-template-columns:11em minmax(0,1fr);gap:4px 16px;align-items:center;padding:8px 0}
+.group h2{font-size:15px;margin:0 0 10px;font-weight:700}
+.group .gdesc{font-size:12px;color:var(--sub);margin:-6px 0 8px}
+.field{display:grid;grid-template-columns:10em minmax(0,1fr);gap:4px 16px;align-items:center;padding:7px 0}
 @media (max-width:520px){.field{grid-template-columns:1fr}}
 .field label,.field .label{font-size:14px;color:var(--ink-2)}
 .field .hint{grid-column:2;font-size:12px;color:var(--sub);line-height:1.5}
 @media (max-width:520px){.field .hint{grid-column:1}}
-.inbox{justify-self:start;width:100%;display:flex;align-items:center;border:1px solid var(--rule);border-radius:var(--radius);background:#FAFBFC;
-  padding:0 12px;max-width:260px;transition:border-color .15s}
+.inbox{justify-self:start;width:100%;display:flex;align-items:center;border:1px solid var(--rule);border-radius:var(--radius);background:#FAFBFC;padding:0 12px;max-width:250px;transition:border-color .15s}
 .inbox:focus-within{border-color:var(--focus);background:#fff}
-.inbox input{flex:1;min-width:0;border:none;background:transparent;font:inherit;font-size:18px;padding:8px 0;
-  color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+.inbox input{flex:1;min-width:0;border:none;background:transparent;font:inherit;font-size:18px;padding:8px 0;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
 .inbox input:focus-visible{outline:none}
 .inbox .unit{font-size:13px;color:var(--sub);margin-left:8px;white-space:nowrap}
-.inbox.short{max-width:150px}
-
+.inbox.error{border-color:var(--shu);background:var(--shu-bg)}
+.sel{justify-self:start;font:inherit;font-size:16px;padding:8px 10px;border:1px solid var(--rule);border-radius:var(--radius);background:#FAFBFC;color:var(--ink);max-width:250px;width:100%}
 .chips{grid-column:2;display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
 @media (max-width:520px){.chips{grid-column:1}}
-.chip{font:inherit;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--rule);
-  background:#fff;color:var(--ink-2);cursor:pointer}
+.chip{font:inherit;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--rule);background:#fff;color:var(--ink-2);cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
-
 .seg{justify-self:start;display:inline-flex;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;background:#FAFBFC;flex-wrap:wrap}
-.seg button{font:inherit;font-size:14px;padding:7px 14px;border:none;background:transparent;color:var(--ink-2);cursor:pointer;
-  border-right:1px solid var(--rule)}
+.seg button{font:inherit;font-size:14px;padding:7px 14px;border:none;background:transparent;color:var(--ink-2);cursor:pointer;border-right:1px solid var(--rule)}
 .seg button:last-child{border-right:none}
 .seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
 
-/* ── 判定パネル ── */
+/* 自社ローンの試算結果 */
+.loanbox{margin:10px 0 6px;border:1px solid var(--ink);border-radius:var(--radius);overflow:hidden}
+.loanbox .top{display:grid;grid-template-columns:1fr 1fr;background:var(--ink);color:#fff}
+.loanbox .top div{padding:12px 16px}
+.loanbox .top div+div{border-left:1px solid #2E3A55}
+.loanbox .top span{display:block;font-size:12px;color:#B9C2D3}
+.loanbox .top b{font-size:24px;line-height:1.3}
+.loanbox dl{margin:0;display:grid;grid-template-columns:1fr auto;font-size:13px;padding:6px 16px 8px}
+.loanbox dt,.loanbox dd{margin:0;padding:5px 0;border-bottom:1px dashed var(--rule-soft)}
+.loanbox dd{text-align:right;padding-left:12px}
+.loanbox dt.key,.loanbox dd.key{font-weight:700;border-bottom:none;color:var(--ink)}
+.loanbox .err{display:none;padding:10px 16px;background:var(--shu-bg);color:var(--shu);font-size:13px;font-weight:700}
+.loanbox.invalid .err{display:block}
+.loanbox.invalid .top,.loanbox.invalid dl{opacity:.35}
+.loannote{font-size:12px;color:var(--sub);margin:4px 0 0;line-height:1.55}
+
+/* 他社借入 */
+.debts{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.debt{border:1px solid var(--rule);border-radius:var(--radius);padding:12px 14px;background:#FCFCFD}
+.debt-top{display:flex;gap:10px;align-items:center}
+.debt-top .num{flex:none;width:22px;height:22px;border-radius:50%;border:1px solid var(--rule);font-size:12px;color:var(--sub);display:grid;place-items:center}
+.debt-top select{flex:1;min-width:0;max-width:none}
+.del{font:inherit;font-size:12px;border:none;background:none;color:var(--sub);cursor:pointer;padding:4px 6px;text-decoration:underline}
+.del:hover{color:var(--shu)}
+.debt-fields{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px;margin-top:10px}
+@media (max-width:520px){.debt-top select{font-size:14px;padding:8px 6px}.debt-fields{grid-template-columns:1fr 1fr}.debt-fields .f1{grid-column:1/3}}
+.debt-fields > div{min-width:0}
+.debt-fields .inbox input{width:100%}
+.debt-fields label{font-size:12px;color:var(--sub);display:block}
+.debt-fields .inbox{max-width:none;padding:0 8px}
+.debt-fields .inbox input{font-size:16px;padding:6px 0}
+.debt-foot{margin:8px 0 0;font-size:12px;color:var(--sub)}
+.add{font:inherit;font-size:14px;margin-top:10px;width:100%;padding:10px;border:1px dashed var(--ink-2);border-radius:var(--radius);background:transparent;color:var(--ink);cursor:pointer}
+.add:hover{background:#fff}
+.debt-sum{display:flex;justify-content:space-between;gap:12px;margin-top:12px;font-size:14px;padding-top:10px;border-top:1px solid var(--rule-soft)}
+.debt-sum b{font-size:17px}
+.housing-note{font-size:12px;color:var(--sub);margin:8px 0 0}
+
+/* 判定 */
 .verdict{position:sticky;top:16px;overflow:hidden}
 @media (max-width:900px){.verdict{position:static}}
 .verdict-head{display:flex;gap:20px;align-items:center;padding:24px 24px 20px;border-bottom:1px solid var(--rule-soft)}
-.stamp{flex:none;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;
-  border:3px solid currentColor;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 5px currentColor;
-  transform:rotate(-9deg);color:#B6BDC8;opacity:.94}
-.stamp span{font-size:46px;font-weight:700;line-height:1;transform:translateY(-1px)}
+.stamp{flex:none;width:96px;height:96px;border-radius:50%;display:grid;place-items:center;border:3px solid currentColor;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 5px currentColor;transform:rotate(-9deg);color:#B6BDC8;opacity:.94}
+.stamp span{font-size:46px;font-weight:700;line-height:1}
 .stamp[data-state="pass"]{color:var(--moss)}
 .stamp[data-state="fail"]{color:var(--shu)}
 .stamp[data-state="idle"]{border-style:dashed;box-shadow:none}
@@ -101,51 +115,44 @@ body{
 .verdict-text .k{font-size:12px;color:var(--sub);margin:0}
 .verdict-text .v{font-size:24px;font-weight:700;margin:0;line-height:1.35}
 .verdict-text .c{margin:6px 0 0;font-size:13px;line-height:1.55;padding:6px 10px;border-radius:4px;display:inline-block}
-.c.danger{background:var(--shu-bg);color:var(--shu)}
-.c.warn{background:var(--amber-bg);color:var(--amber)}
-.c.ok{background:var(--moss-bg);color:var(--moss)}
-.c.none{background:var(--rule-soft);color:var(--sub)}
-
+.c.danger{background:var(--shu-bg);color:var(--shu)} .c.warn{background:var(--amber-bg);color:var(--amber)}
+.c.ok{background:var(--moss-bg);color:var(--moss)} .c.none{background:var(--rule-soft);color:var(--sub)}
 .pane{padding:18px 24px;border-bottom:1px solid var(--rule-soft)}
 .pane:last-child{border-bottom:none}
 .pane h3{font-size:13px;margin:0 0 10px;color:var(--ink-2);font-weight:700}
-
 .checks{list-style:none;margin:0;padding:0;counter-reset:ck}
-.checks li{counter-increment:ck;display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:10px;align-items:baseline;
-  padding:8px 0;border-top:1px dashed var(--rule-soft)}
+.checks li{counter-increment:ck;display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:8px 0;border-top:1px dashed var(--rule-soft)}
 .checks li:first-child{border-top:none}
-.checks li::before{content:counter(ck);font-size:12px;color:var(--sub);text-align:center;border:1px solid var(--rule);border-radius:50%;
-  width:22px;height:22px;line-height:20px;align-self:center}
+.checks li::before{content:counter(ck);font-size:12px;color:var(--sub);text-align:center;border:1px solid var(--rule);border-radius:50%;width:22px;height:22px;line-height:20px;align-self:center}
 .checks .what{font-size:14px}
 .checks .what small{display:block;font-size:12px;color:var(--sub);line-height:1.4}
 .checks .res{font-size:14px;font-weight:700;white-space:nowrap}
 .res.ok{color:var(--moss)} .res.ng{color:var(--shu)} .res.skip{color:var(--sub);font-weight:400}
 .checks li.decider .what{font-weight:700}
-.checks li.decider .tag{font-size:11px;color:#fff;background:var(--shu);border-radius:3px;padding:1px 6px;margin-left:6px;font-weight:400;vertical-align:1px}
-
+.checks .tag{font-size:11px;color:#fff;background:var(--shu);border-radius:3px;padding:1px 6px;margin-left:6px;font-weight:400;vertical-align:1px}
 .gauge-row{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--ink-2);margin-bottom:6px}
 .gauge-row b{font-size:20px;color:var(--ink)}
 .gauge{position:relative;height:12px;background:var(--rule-soft);border-radius:2px}
 .gauge-fill{position:absolute;left:0;top:0;bottom:0;background:var(--ink-2);border-radius:2px;transition:width .25s}
 .gauge-fill.short{background:var(--shu)}
 .gauge-mark{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--ink);transition:left .25s}
-.gauge-note{font-size:12px;color:var(--sub);margin-top:8px}
-
+.gauge-note{font-size:12px;color:var(--sub);margin:8px 0 0}
+.bear{margin:12px 0 0;display:grid;grid-template-columns:1fr auto;font-size:13px}
+.bear dt,.bear dd{margin:0;padding:6px 0;border-top:1px solid var(--rule-soft)}
+.bear dd{text-align:right;font-weight:700;padding-left:12px}
 .rm{background:#F6F7F9}
 .rm .row{display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-size:14px}
-.rm .status{font-weight:700}
+.rm .status{font-weight:700;text-align:right}
 .rm .basis{font-size:12px;color:var(--sub);margin:4px 0 0;line-height:1.55}
 .rm .agree{margin:10px 0 0;font-size:13px;padding:8px 10px;border-radius:4px;line-height:1.55}
-.agree.same{background:var(--rule-soft);color:var(--ink-2)}
-.agree.diff{background:var(--amber-bg);color:var(--amber)}
+.agree.same{background:var(--rule-soft);color:var(--ink-2)} .agree.diff{background:var(--amber-bg);color:var(--amber)}
 
-/* ── 計算の中身 ── */
-.detail{margin-top:24px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:24px;align-items:start}
+/* 下段 */
+.detail{margin-top:24px;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:24px;align-items:start}
 @media (max-width:900px){.detail{grid-template-columns:1fr}}
 .detail .card{padding:22px 26px}
 .detail h2{font-size:17px;margin:0 0 4px}
 .detail .desc{font-size:13px;color:var(--sub);margin:0 0 14px}
-
 .ledger{width:100%;border-collapse:collapse}
 .ledger td{padding:9px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
 .ledger .op{width:28px;color:var(--sub);font-size:16px}
@@ -157,23 +164,20 @@ body{
 .ledger tr.total .amt{font-size:20px}
 .ledger tr.cmp td{border-bottom:none;color:var(--ink-2)}
 .neg{color:var(--shu)}
-
-.living{width:100%;border-collapse:collapse;font-size:13px}
-.living th,.living td{padding:8px 8px;border:1px solid var(--rule);text-align:right}
-.living th{background:#F6F7F9;font-weight:700;color:var(--ink-2)}
-.living th:first-child,.living td:first-child{text-align:left}
-.living td small{display:block;color:var(--sub);font-size:11px}
-.living td.on{background:var(--ink);color:#fff;font-weight:700}
-.living td.on small{color:#C9D1DD}
-.living-note{font-size:12px;color:var(--sub);margin:8px 0 0}
-
-.refs{margin:12px 0 0;display:grid;grid-template-columns:1fr auto;gap:0;font-size:14px}
-.refs dt,.refs dd{padding:7px 0;border-bottom:1px solid var(--rule-soft);margin:0}
-.refs dd{text-align:right;padding-left:16px}
+.draft{display:inline-block;font-size:12px;color:var(--shu);border:1px solid var(--shu);border-radius:3px;padding:0 6px;margin-left:8px;vertical-align:3px;font-weight:400}
+.rates{width:100%;border-collapse:collapse;font-size:13px}
+.rates th,.rates td{padding:8px 6px;border-bottom:1px solid var(--rule-soft);text-align:left;vertical-align:top}
+.rates th{font-size:12px;color:var(--sub);font-weight:400;border-bottom:1px solid var(--ink-2)}
+.rates td:nth-child(2){white-space:nowrap}
+.rates td.r{text-align:right;white-space:nowrap;font-weight:700}
+.rates td small{display:block;color:var(--sub);font-size:11px;line-height:1.45}
+.rates-note{font-size:12px;color:var(--sub);margin:10px 0 0;line-height:1.6}
 .refs-title{font-size:14px;font-weight:700;margin:22px 0 0}
 .refs-desc{font-size:12px;color:var(--sub);margin:2px 0 0}
-
-.scope{margin-top:24px;font-size:13px;color:var(--ink-2);border-left:3px solid var(--ink);padding:4px 0 4px 14px;max-width:60em}
+.refs{margin:12px 0 0;display:grid;grid-template-columns:1fr auto;font-size:14px}
+.refs dt,.refs dd{padding:7px 0;border-bottom:1px solid var(--rule-soft);margin:0}
+.refs dd{text-align:right;padding-left:16px}
+.scope{margin-top:24px;font-size:13px;color:var(--ink-2);border-left:3px solid var(--ink);padding:4px 0 4px 14px;max-width:62em}
 .scope p{margin:0 0 4px}
 </style>
 </head>
@@ -184,7 +188,7 @@ body{
     <div>
       <p class="book">自社ローン 運用マニュアル</p>
       <h1>スコアリングシート</h1>
-      <p class="lead">ヒアリングした数字を入れると、支払余力のスコアと足切り判定がその場で出ます。判定の根拠は下の「計算の中身」でそのまま説明できます。</p>
+      <p class="lead">自社ローンの条件と、ヒアリングした収入・他社借入を入れると、そのローンに耐えられるかをスコアで判定します。判定の根拠は下の「計算の中身」でそのまま説明できます。</p>
     </div>
     <div class="actions">
       <button type="button" class="btn" id="btnSample">サンプル値を入れる</button>
@@ -193,13 +197,12 @@ body{
   </header>
 
   <div class="grid">
-
-    <!-- 入力 -->
     <section class="card form" aria-label="入力">
+
       <div class="group">
-        <h2>商品</h2>
+        <h2>組もうとしている自社ローン</h2>
         <div class="field">
-          <label for="price">商品金額</label>
+          <label for="price">元金（税込）</label>
           <div class="inbox"><input id="price" inputmode="numeric" autocomplete="off"><span class="unit">円</span></div>
           <div class="chips" role="group" aria-label="プランから選ぶ">
             <button type="button" class="chip" data-price="902000">MP / VP　902,000</button>
@@ -207,6 +210,31 @@ body{
             <button type="button" class="chip" data-price="492800">MPC / VPC　492,800</button>
           </div>
         </div>
+        <div class="field">
+          <label for="down">頭金</label>
+          <div class="inbox" id="downBox"><input id="down" inputmode="numeric" autocomplete="off"><span class="unit">円</span></div>
+          <div class="hint">0円か、第1回支払額以上</div>
+        </div>
+        <div class="field">
+          <label for="times">支払回数</label>
+          <select class="sel" id="times"></select>
+        </div>
+
+        <div class="loanbox" id="loanbox">
+          <div class="err" id="loanErr">頭金の条件を満たしていません</div>
+          <div class="top">
+            <div><span>第2回目以降（月々）</span><b id="oMonthly">―</b></div>
+            <div><span>第1回支払額</span><b id="oFirst">―</b></div>
+          </div>
+          <dl>
+            <dt>分割対象金額</dt><dd id="oPrincipal">―</dd>
+            <dt>分割事務手数料（実質年率8.0%）</dt><dd id="oFee">―</dd>
+            <dt>分割支払総額</dt><dd id="oSplit">―</dd>
+            <dt>お支払い総計（頭金含む）</dt><dd id="oGrand">―</dd>
+            <dt class="key">審査で見る年間支払額</dt><dd class="key" id="oAnnual">―</dd>
+          </dl>
+        </div>
+        <p class="loannote">2回目以降は100円未満切り捨て、端数は第1回で調整。引落は毎月27日（土日祝は翌営業日）。</p>
       </div>
 
       <div class="group">
@@ -219,47 +247,27 @@ body{
         <div class="field">
           <span class="label" id="hhLabel">世帯人数</span>
           <div class="seg" role="group" aria-labelledby="hhLabel" id="household">
-            <button type="button" data-v="1">1人</button>
-            <button type="button" data-v="2">2人</button>
-            <button type="button" data-v="3">3人</button>
-            <button type="button" data-v="4">4人以上</button>
+            <button type="button" data-v="1">1人</button><button type="button" data-v="2">2人</button><button type="button" data-v="3">3人</button><button type="button" data-v="4">4人以上</button>
           </div>
         </div>
         <div class="field">
           <span class="label" id="hcLabel">住宅コスト</span>
           <div class="seg" role="group" aria-labelledby="hcLabel" id="housing">
-            <button type="button" data-v="with">あり（賃貸・ローン）</button>
-            <button type="button" data-v="none">なし（持ち家）</button>
+            <button type="button" data-v="with">あり（賃貸・ローン）</button><button type="button" data-v="none">なし（持ち家）</button>
           </div>
         </div>
       </div>
 
       <div class="group">
         <h2>他社からの借入</h2>
-        <div class="field">
-          <label for="monthly">毎月の返済額</label>
-          <div class="inbox"><input id="monthly" inputmode="numeric" autocomplete="off"><span class="unit">円 / 月</span></div>
-          <div class="hint">他社すべての返済を合算。借入がなければ 0</div>
-        </div>
-        <div class="field">
-          <label for="count">借入件数</label>
-          <div class="inbox short"><input id="count" inputmode="numeric" autocomplete="off"><span class="unit">件</span></div>
-          <div class="hint">3件以上は自動で足切り</div>
-        </div>
-        <div class="field">
-          <label for="years">残り返済期間</label>
-          <div class="inbox short"><input id="years" inputmode="decimal" autocomplete="off"><span class="unit">年</span></div>
-          <div class="hint">参考値（推定残高・利息）の計算にだけ使います</div>
-        </div>
-        <div class="field">
-          <label for="rate">想定年利</label>
-          <div class="inbox short"><input id="rate" inputmode="decimal" autocomplete="off"><span class="unit">%</span></div>
-          <div class="hint">不明なら 18% のままで可</div>
-        </div>
+        <p class="gdesc">1社ずつ追加してください。種類を選ぶと年利の目安が入ります（手で変更可）。</p>
+        <div class="debts" id="debts"></div>
+        <button type="button" class="add" id="addDebt">＋ 借入を追加</button>
+        <div class="debt-sum"><span>合計 <b id="debtCount">0件</b></span><span>毎月 <b id="debtMonthly">0円</b></span></div>
+        <p class="housing-note">住宅ローンは「住宅コストあり」で見ているため、ここには入れません。件数は返済額が入っている行だけ数えます。</p>
       </div>
     </section>
 
-    <!-- 判定 -->
     <aside class="card verdict" aria-live="polite">
       <div class="verdict-head">
         <div class="stamp" id="stamp" data-state="idle"><span id="stampChar">―</span></div>
@@ -275,14 +283,19 @@ body{
         <ol class="checks">
           <li id="ck1"><span class="what">他社借入が3件未満<small id="ck1d">―</small></span><span class="res skip" id="ck1r">―</span></li>
           <li id="ck2"><span class="what">他社返済比率が年収の15%以下<small id="ck2d">―</small></span><span class="res skip" id="ck2r">―</span></li>
-          <li id="ck3"><span class="what">算定スコアが最低必要スコア以上<small id="ck3d">―</small></span><span class="res skip" id="ck3r">―</span></li>
+          <li id="ck3"><span class="what">算定スコアが自社ローンの年間支払額以上<small id="ck3d">―</small></span><span class="res skip" id="ck3r">―</span></li>
         </ol>
       </div>
 
       <div class="pane">
-        <div class="gauge-row"><span>算定スコア<br><b id="gScore">―</b></span><span style="text-align:right">最低必要スコア<br><b id="gReq">―</b></span></div>
+        <div class="gauge-row"><span>算定スコア<br><b id="gScore">―</b></span><span style="text-align:right">自社ローンの年間支払額<br><b id="gReq">―</b></span></div>
         <div class="gauge" aria-hidden="true"><div class="gauge-fill" id="gFill" style="width:0"></div><div class="gauge-mark" id="gMark" style="left:50%"></div></div>
-        <p class="gauge-note" id="gNote">縦線が最低必要スコア</p>
+        <p class="gauge-note" id="gNote">縦線が自社ローンの年間支払額</p>
+        <dl class="bear">
+          <dt>月あたりの余力（算定スコア ÷ 12）</dt><dd id="bRoom">―</dd>
+          <dt>自社ローンの月々（2回目以降）</dt><dd id="bMonthly">―</dd>
+          <dt>自社ローン込みの返済負担率（対年収）</dt><dd id="bDti">―</dd>
+        </dl>
       </div>
 
       <div class="pane rm">
@@ -294,40 +307,33 @@ body{
     </aside>
   </div>
 
-  <!-- 計算の中身 -->
   <div class="detail">
     <section class="card">
       <h2>計算の中身</h2>
-      <p class="desc">自社スコア ＝（税込年収 − 生活維持費 − 他社年間返済額）× 0.9</p>
-      <table class="ledger">
-        <tbody>
-          <tr><td class="op"></td><td class="name">税込年収</td><td class="amt" id="lIncome">―</td></tr>
-          <tr><td class="op">−</td><td class="name">生活維持費<small id="lLivingD">―</small></td><td class="amt" id="lLiving">―</td></tr>
-          <tr class="sub"><td class="op">−</td><td class="name">他社年間返済額（1.3倍で厳しめに評価）<small id="lOtherD">―</small></td><td class="amt" id="lOther">―</td></tr>
-          <tr><td class="op">＝</td><td class="name">支払余力</td><td class="amt" id="lRoom">―</td></tr>
-          <tr class="sub"><td class="op">×</td><td class="name">0.9<small>割賦販売法ベースの掛け目</small></td><td class="amt"></td></tr>
-          <tr class="total"><td class="op">＝</td><td class="name">算定スコア</td><td class="amt" id="lScore">―</td></tr>
-          <tr class="cmp"><td class="op"></td><td class="name">最低必要スコア<small id="lReqD">―</small></td><td class="amt" id="lReq">―</td></tr>
-        </tbody>
-      </table>
+      <p class="desc">自社スコア ＝（税込年収 − 生活維持費 − 他社年間返済額）× 0.9　→　自社ローンの年間支払額と比べる</p>
+      <table class="ledger"><tbody>
+        <tr><td class="op"></td><td class="name">税込年収</td><td class="amt" id="lIncome">―</td></tr>
+        <tr><td class="op">−</td><td class="name">生活維持費<small id="lLivingD">―</small></td><td class="amt" id="lLiving">―</td></tr>
+        <tr class="sub"><td class="op">−</td><td class="name">他社年間返済額（1.3倍で厳しめに評価）<small id="lOtherD">―</small></td><td class="amt" id="lOther">―</td></tr>
+        <tr><td class="op">＝</td><td class="name">支払余力</td><td class="amt" id="lRoom">―</td></tr>
+        <tr class="sub"><td class="op">×</td><td class="name">0.9<small>割賦販売法ベースの掛け目</small></td><td class="amt"></td></tr>
+        <tr class="total"><td class="op">＝</td><td class="name">算定スコア</td><td class="amt" id="lScore">―</td></tr>
+        <tr class="cmp"><td class="op">vs</td><td class="name">自社ローンの年間支払額<small id="lReqD">―</small></td><td class="amt" id="lReq">―</td></tr>
+      </tbody></table>
     </section>
 
     <section class="card">
-      <h2>生活維持費</h2>
-      <p class="desc">法的最低基準に準じた年額に、アプラ基準として一律60万円を上乗せ。ヒアリング不要で世帯人数と住宅コストだけで決まります。</p>
-      <table class="living" id="livingTable">
-        <thead><tr><th>世帯人数</th><th>住宅コストあり<br>（賃貸・ローン）</th><th>住宅コストなし<br>（持ち家）</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <p class="living-note">いまの入力に当てはまる欄を反転表示しています。</p>
+      <h2>年利の目安<span class="draft">本番では削除予定</span></h2>
+      <p class="desc">他社借入の種類を選んだときに入る初期値です。2026年時点の一般的な水準をもとにした仮置きで、判定には使わず、下の参考値（推定残高・利息）の計算にだけ使います。</p>
+      <table class="rates"><thead><tr><th>種類</th><th>一般的な幅</th><th style="text-align:right">初期値</th></tr></thead><tbody id="rateTable"></tbody></table>
+      <p class="rates-note">お客さまの契約書や利用明細で実際の金利がわかる場合は、そちらを入れてください。</p>
 
       <p class="refs-title">参考値</p>
       <p class="refs-desc">他社ローンの残りを把握するための数字です。判定には使っていません。</p>
       <dl class="refs">
-        <dt>残り返済月数</dt><dd id="rMonths">―</dd>
-        <dt>返済総額（毎月返済額 × 月数）</dt><dd id="rTotal">―</dd>
-        <dt>推定借入残高（元本）</dt><dd id="rPV">―</dd>
-        <dt>支払利息合計</dt><dd id="rInt">―</dd>
+        <dt>他社の返済総額（残り）</dt><dd id="rTotal">―</dd>
+        <dt>他社の推定借入残高（元本）</dt><dd id="rPV">―</dd>
+        <dt>他社の支払利息合計（残り）</dt><dd id="rInt">―</dd>
         <dt>他社返済比率（対年収）</dt><dd id="rDti">―</dd>
       </dl>
     </section>
@@ -341,138 +347,210 @@ body{
 
 <script>
 (() => {
-  // ───── 定数（スプレッドシート「スコアリングシート」準拠）─────
-  const LIVING_BASE = {                // 法的最低基準に準じた年額
-    with: [1160000, 1770000, 2090000, 2400000],
-    none: [ 900000, 1360000, 1610000, 1850000]
-  };
-  const APRA_ADD = 600000;             // アプラ基準の上乗せ
-  const REQUIRED_RATE = 0.2439;        // 最低必要スコア＝商品金額×0.2439（千円単位で四捨五入）
-  const OTHER_MULT = 1.3;              // 他社年間返済額の過大評価倍率
-  const SCORE_MULT = 0.9;
-  const COUNT_CUT = 3;
-  const DTI_CUT = 0.15;
+  // ───── 生活維持費（上乗せなし）─────
+  const LIVING = { with: [1160000, 1770000, 2090000, 2400000], none: [900000, 1360000, 1610000, 1850000] };
+  const OTHER_MULT = 1.3, SCORE_MULT = 0.9, COUNT_CUT = 3, DTI_CUT = 0.15;
 
-  // RM共有ライン（#rm-自社割賦共有 2026/9/10）
+  // ───── 自社ローン（PAYMENT PLANNER準拠）─────
+  const JISHA_RATE = 0.08;
+  function jishaLoan(price, down, times) {
+    const principal = price - down;
+    if (principal <= 0) return { principal: Math.max(principal, 0), monthly: 0, first: 0, fee: 0, split: 0, grand: price, valid: down >= 0, annual: 0 };
+    const r = JISHA_RATE / 12, n = times;
+    const exact = (principal * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    const monthly = Math.floor(exact / 100) * 100;
+    const first = Math.ceil((exact * n - monthly * (n - 1)) / 100) * 100;
+    const split = first + monthly * (n - 1);
+    // 審査で見る年間支払額：2回目以降の月々×12（12回未満は1年以内に全額払うので分割支払総額）
+    const annual = n >= 12 ? monthly * 12 : split;
+    return { principal, monthly, first, fee: split - principal, split, grand: split + down, valid: down === 0 || down >= first, annual };
+  }
+
+  // ───── 他社借入の種類と年利の目安（本番では削除予定）─────
+  const DEBT_TYPES = [
+    { key: 'sarakin',   name: '消費者金融（サラ金）',                 rate: 18.0, range: '3.0〜18.0%', note: '大手の上限は17.8〜18.0%。元本10万〜100万円未満の法定上限が18%' },
+    { key: 'bankcard',  name: '銀行カードローン',                     rate: 14.5, range: '1.5〜15.0%', note: '少額の枠ほど上限寄り。2026年は利上げで引き上げが続く' },
+    { key: 'revo',      name: 'クレジットカード（リボ・キャッシング）', rate: 18.0, range: '15.0〜18.0%', note: 'リボ手数料を15%から18%に改定するカード会社あり' },
+    { key: 'bunkatsu',  name: 'カード分割・ショッピングローン',         rate: 15.0, range: '14〜18%',    note: '支払回数が多いほど高くなる' },
+    { key: 'carbank',   name: '自動車ローン（銀行・信金・JA）',         rate: 2.5,  range: '1〜3%台',    note: '金利は低いが審査は厳しめ' },
+    { key: 'cardealer', name: '自動車ローン（ディーラー・信販）',       rate: 6.0,  range: '4〜8%',      note: '銀行系の2〜4倍になることも' },
+    { key: 'edu',       name: '教育ローン',                           rate: 3.0,  range: '2〜4%程度',  note: '国・銀行とも固定金利が中心（目安）' },
+    { key: 'phone',     name: 'スマホ端末の分割',                     rate: 0,    range: '0%',         note: '多くは分割手数料なし' },
+    { key: 'other',     name: 'その他・不明',                         rate: 15.0, range: '―',          note: '元本100万円以上の法定上限15%を仮置き' }
+  ];
+  const typeOf = k => DEBT_TYPES.find(t => t.key === k) || DEBT_TYPES[DEBT_TYPES.length - 1];
+
+  // ───── RM共有ライン（#rm-自社割賦共有 2026/9/10）─────
   const RM_LINE = [
-    { key: 'full', name: '満額（MP / VP）',   minPrice: 702000.01, income: 1700000 },
-    { key: 'a',    name: 'MPA / VPA',         minPrice: 492800.01, income: 1610000 },
-    { key: 'c',    name: 'MPC / VPC',         minPrice: 0,         income: 1450000 }
+    { name: '満額（MP / VP）', minPrice: 702000.01, income: 1700000 },
+    { name: 'MPA / VPA',       minPrice: 492800.01, income: 1610000 },
+    { name: 'MPC / VPC',       minPrice: 0,         income: 1450000 }
   ];
   const RM_NG_INCOME = 1450000;
 
-  const SAMPLE = { price: 902000, monthly: 50000, count: 3, years: 3, rate: 18, income: 3690360, household: 1, housing: 'none' };
+  const SAMPLE = {
+    price: 902000, down: 0, times: 60, income: 3690360, household: 1, housing: 'none',
+    debts: [
+      { type: 'sarakin', monthly: 15000, years: 2 },
+      { type: 'bankcard', monthly: 10000, years: 3 },
+      { type: 'cardealer', monthly: 25000, years: 4 }
+    ]
+  };
+  const EMPTY = { price: 902000, down: 0, times: 60, income: '', household: 1, housing: 'none', debts: [] };
 
+  // ───── ユーティリティ ─────
   const $ = id => document.getElementById(id);
   const yen = n => (n < 0 ? '−' : '') + Math.round(Math.abs(n)).toLocaleString('ja-JP');
-  const man = n => {
-    const v = n / 10000;
-    return (Number.isInteger(v) ? v.toLocaleString('ja-JP') : v.toLocaleString('ja-JP', { maximumFractionDigits: 1 })) + '万円';
-  };
+  const man = n => { const v = n / 10000; return (Number.isInteger(v) ? v.toLocaleString('ja-JP') : v.toLocaleString('ja-JP', { maximumFractionDigits: 1 })) + '万円'; };
   const pct = (n, d = 2) => (n * 100).toFixed(d) + '%';
-  const excelRoundK = x => Math.sign(x) * Math.round(Math.abs(x) / 1000) * 1000;
-
   const toHalf = s => String(s).replace(/[０-９．，]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
-  const parse = s => {
-    const t = toHalf(s).replace(/[,\s円%]/g, '');
-    if (t === '') return null;
-    const v = Number(t);
-    return Number.isFinite(v) ? v : null;
-  };
-
-  const state = { household: 1, housing: 'none' };
-  const numIds = ['price', 'income', 'monthly', 'count', 'years', 'rate'];
-  const commaIds = ['price', 'income', 'monthly'];
-
-  // ───── 入力まわり ─────
-  function setVal(id, v) {
-    const el = $(id);
-    if (v === null || v === undefined || v === '') { el.value = ''; return; }
-    el.value = commaIds.includes(id) ? Number(v).toLocaleString('ja-JP') : String(v);
-  }
-  commaIds.forEach(id => {
-    const el = $(id);
+  const parse = s => { const t = toHalf(s).replace(/[,\s円%]/g, ''); if (t === '') return null; const v = Number(t); return Number.isFinite(v) ? v : null; };
+  const fmtInput = (v, comma) => (v === null || v === undefined || v === '') ? '' : (comma ? Number(v).toLocaleString('ja-JP') : String(v));
+  function commaBehavior(el) {
     el.addEventListener('focus', () => { const v = parse(el.value); el.value = v === null ? '' : String(v); });
-    el.addEventListener('blur',  () => { const v = parse(el.value); setVal(id, v); });
-  });
-  numIds.forEach(id => $(id).addEventListener('input', render));
+    el.addEventListener('blur', () => { const v = parse(el.value); el.value = fmtInput(v, true); });
+  }
+
+  const state = { household: 1, housing: 'none', debts: [] };
+  let seq = 0;
+
+  // 支払回数
+  const timesSel = $('times');
+  for (let i = 3; i <= 60; i += 3) {
+    const o = document.createElement('option');
+    o.value = i; o.textContent = `${i}回` + (i % 12 === 0 ? `（${i / 12}年）` : '');
+    timesSel.appendChild(o);
+  }
+  timesSel.addEventListener('change', render);
+
+  ['price', 'down', 'income'].forEach(id => { commaBehavior($(id)); $(id).addEventListener('input', render); });
 
   function bindSeg(id, key, cast) {
-    $(id).querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-      state[key] = cast(b.dataset.v); render();
-    }));
+    $(id).querySelectorAll('button').forEach(b => b.addEventListener('click', () => { state[key] = cast(b.dataset.v); render(); }));
   }
   bindSeg('household', 'household', Number);
   bindSeg('housing', 'housing', String);
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { $('price').value = fmtInput(Number(c.dataset.price), true); render(); }));
 
-  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
-    setVal('price', Number(c.dataset.price)); render();
-  }));
-
-  $('btnSample').addEventListener('click', () => load(SAMPLE));
-  $('btnClear').addEventListener('click', () => load({ price: 902000, monthly: '', count: '', years: '', rate: 18, income: '', household: 1, housing: 'none' }));
-
-  function load(o) {
-    numIds.forEach(id => setVal(id, o[id]));
-    state.household = o.household; state.housing = o.housing;
+  // ───── 他社借入の行 ─────
+  function addDebt(d = { type: 'sarakin', monthly: '', years: '' }, focus = false) {
+    const t = typeOf(d.type);
+    state.debts.push({ id: ++seq, type: t.key, monthly: d.monthly ?? '', years: d.years ?? '', rate: d.rate ?? t.rate });
+    buildDebts();
+    if (focus) { const rows = $('debts').querySelectorAll('.debt'); rows[rows.length - 1].querySelector('select').focus(); }
     render();
   }
+  function buildDebts() {
+    const box = $('debts');
+    box.innerHTML = '';
+    state.debts.forEach((d, i) => {
+      const row = document.createElement('div');
+      row.className = 'debt';
+      row.innerHTML = `
+        <div class="debt-top">
+          <span class="num">${i + 1}</span>
+          <select class="sel" aria-label="${i + 1}社目の種類">${DEBT_TYPES.map(t => `<option value="${t.key}" ${t.key === d.type ? 'selected' : ''}>${t.name}</option>`).join('')}</select>
+          <button type="button" class="del" aria-label="${i + 1}社目を削除">削除</button>
+        </div>
+        <div class="debt-fields">
+          <div class="f1"><label>毎月の返済額</label><div class="inbox"><input data-k="monthly" inputmode="numeric" autocomplete="off" value="${fmtInput(d.monthly, true)}"><span class="unit">円</span></div></div>
+          <div><label>残り期間</label><div class="inbox"><input data-k="years" inputmode="decimal" autocomplete="off" value="${fmtInput(d.years)}"><span class="unit">年</span></div></div>
+          <div><label>年利</label><div class="inbox"><input data-k="rate" inputmode="decimal" autocomplete="off" value="${fmtInput(d.rate)}"><span class="unit">%</span></div></div>
+        </div>
+        <p class="debt-foot" data-foot>―</p>`;
+      const sel = row.querySelector('select');
+      sel.addEventListener('change', () => {
+        d.type = sel.value; d.rate = typeOf(sel.value).rate;
+        row.querySelector('[data-k="rate"]').value = fmtInput(d.rate);
+        render();
+      });
+      row.querySelector('.del').addEventListener('click', () => {
+        state.debts = state.debts.filter(x => x.id !== d.id); buildDebts(); render();
+        $('addDebt').focus();
+      });
+      row.querySelectorAll('input').forEach(inp => {
+        const k = inp.dataset.k;
+        if (k === 'monthly') commaBehavior(inp);
+        inp.addEventListener('input', () => { d[k] = parse(inp.value) ?? ''; render(); });
+      });
+      d._foot = row.querySelector('[data-foot]');
+      box.appendChild(row);
+    });
+  }
+  $('addDebt').addEventListener('click', () => addDebt(undefined, true));
+
+  function load(o) {
+    $('price').value = fmtInput(o.price, true);
+    $('down').value = fmtInput(o.down, true);
+    $('income').value = fmtInput(o.income, true);
+    timesSel.value = String(o.times);
+    state.household = o.household; state.housing = o.housing;
+    state.debts = []; seq = 0;
+    o.debts.forEach(d => { const t = typeOf(d.type); state.debts.push({ id: ++seq, type: t.key, monthly: d.monthly, years: d.years, rate: d.rate ?? t.rate }); });
+    buildDebts(); render();
+  }
+  $('btnSample').addEventListener('click', () => load(SAMPLE));
+  $('btnClear').addEventListener('click', () => load(EMPTY));
 
   // ───── 計算 ─────
   function compute() {
-    const price   = parse($('price').value)   ?? 0;
-    const income  = parse($('income').value)  ?? 0;
-    const monthly = parse($('monthly').value) ?? 0;
-    const count   = parse($('count').value)   ?? 0;
-    const years   = parse($('years').value)   ?? 0;
-    const rate    = (parse($('rate').value)   ?? 0) / 100;
-
+    const price = parse($('price').value) ?? 0;
+    const down = parse($('down').value) ?? 0;
+    const times = Number(timesSel.value) || 60;
+    const income = parse($('income').value) ?? 0;
     const hh = Math.min(Math.max(Math.round(state.household) || 1, 1), 4);
-    const livingBase = LIVING_BASE[state.housing][hh - 1];
-    const living = livingBase + APRA_ADD;
+    const living = LIVING[state.housing][hh - 1];
+    const loan = jishaLoan(price, down, times);
 
-    const required = excelRoundK(price * REQUIRED_RATE);
-    const months = years * 12;
-    const total = monthly * months;
-    const r = rate / 12;
-    const pv = months <= 0 ? 0 : (r === 0 ? monthly * months : monthly * (1 - Math.pow(1 + r, -months)) / r);
-    const interest = total - pv;
+    let monthly = 0, count = 0, total = 0, pv = 0;
+    const debts = state.debts.map(d => {
+      const m = Number(d.monthly) || 0, y = Number(d.years) || 0, rate = (Number(d.rate) || 0) / 100;
+      const n = y * 12, r = rate / 12;
+      const t = m * n;
+      const p = n <= 0 ? 0 : (r === 0 ? t : m * (1 - Math.pow(1 + r, -n)) / r);
+      if (m > 0) { count++; monthly += m; total += t; pv += p; }
+      return { d, m, n, t, p };
+    });
+
+    const required = loan.annual;
     const otherAnnual = monthly * 12 * OTHER_MULT;
     const room = income - living - otherAnnual;
     const score = room * SCORE_MULT;
     const dti = income > 0 ? (monthly * 12) / income : null;
+    const dtiWith = income > 0 ? (monthly * 12 + loan.annual) / income : null;
 
-    // 判定（シートのIF式と同じ順番）
     let verdict, decider = 0, idle = false;
-    if (count >= COUNT_CUT)            { verdict = '不合格（借入件数多）';   decider = 1; }
-    else if (dti === null)             { verdict = '入力待ち'; idle = true; }
-    else if (dti > DTI_CUT)            { verdict = '不合格（返済負担過多）'; decider = 2; }
-    else if (score >= required)        { verdict = '基準クリア'; }
-    else                               { verdict = '不合格（スコア不足）';   decider = 3; }
+    if (!loan.valid)               { verdict = '頭金を見直してください'; idle = true; }
+    else if (count >= COUNT_CUT)   { verdict = '不合格（借入件数多）'; decider = 1; }
+    else if (dti === null)         { verdict = '入力待ち'; idle = true; }
+    else if (dti > DTI_CUT)        { verdict = '不合格（返済負担過多）'; decider = 2; }
+    else if (score >= required)    { verdict = '基準クリア'; }
+    else                           { verdict = '不合格（スコア不足）'; decider = 3; }
 
     let comment, cType;
-    if (count >= COUNT_CUT)            { comment = '【危険】他社借入3件以上（多重債務リスク高/見送り推奨）'; cType = 'danger'; }
-    else if (dti === null)             { comment = '年収を入れると判定します'; cType = 'none'; }
-    else if (dti > DTI_CUT)            { comment = '【危険】他社返済が年収の15%を超過（返済負担過多）'; cType = 'danger'; }
-    else if (monthly > 0)              { comment = '【懸念】他社借入あり（比率15%以内/2件以内）。慎重審査推奨'; cType = 'warn'; }
-    else                               { comment = '懸念点なし'; cType = 'ok'; }
-    if (cType === 'ok' && verdict !== '基準クリア') cType = 'none';
+    if (!loan.valid)               { comment = `頭金は0円か、第1回支払額（${yen(loan.first)}円）以上にしてください`; cType = 'danger'; }
+    else if (count >= COUNT_CUT)   { comment = '【危険】他社借入3件以上（多重債務リスク高/見送り推奨）'; cType = 'danger'; }
+    else if (dti === null)         { comment = '年収を入れると判定します'; cType = 'none'; }
+    else if (dti > DTI_CUT)        { comment = '【危険】他社返済が年収の15%を超過（返済負担過多）'; cType = 'danger'; }
+    else if (monthly > 0)          { comment = '【懸念】他社借入あり（比率15%以内/2件以内）。慎重審査推奨'; cType = 'warn'; }
+    else                           { comment = '懸念点なし'; cType = verdict === '基準クリア' ? 'ok' : 'none'; }
 
-    return { price, income, monthly, count, years, rate, hh, livingBase, living, required, months, total, pv, interest,
-             otherAnnual, room, score, dti, verdict, decider, idle, comment, cType,
-             pass: verdict === '基準クリア' };
+    return { price, down, times, income, hh, living, loan, debts, monthly, count, total, pv, interest: total - pv,
+             required, otherAnnual, room, score, dti, dtiWith, verdict, decider, idle, comment, cType, pass: verdict === '基準クリア' };
   }
 
   function rmCheck(d) {
     const plan = RM_LINE.find(p => d.price >= p.minPrice) || RM_LINE[RM_LINE.length - 1];
-    const hasOther = d.count >= 1 || d.monthly > 0;
+    const hasOther = d.count >= 1;
     let status, cls, pass = false;
-    if (d.count >= 3)                         { status = 'NG（他社借入3件以上）'; cls = 'ng'; }
-    else if (d.income <= 0)                   { status = '―'; cls = 'skip'; }
-    else if (d.income <= RM_NG_INCOME)        { status = 'NG（年収145万円以下・頭金なしの場合）'; cls = 'ng'; }
-    else if (hasOther)                        { status = '要RM相談（他社返済あり）'; cls = 'warn'; }
-    else if (d.income >= plan.income)         { status = '最低基準クリア'; cls = 'ok'; pass = true; }
-    else                                      { status = '最低基準に届かず'; cls = 'ng'; }
+    if (d.count >= 3)                                   { status = 'NG（他社借入3件以上）'; cls = 'ng'; }
+    else if (d.income <= 0)                             { status = '―'; cls = 'skip'; }
+    else if (d.income <= RM_NG_INCOME && d.down === 0)  { status = 'NG（年収145万円以下・頭金なし）'; cls = 'ng'; }
+    else if (hasOther)                                  { status = '要RM相談（他社返済あり）'; cls = 'warn'; }
+    else if (d.times !== 60)                            { status = '最低基準の対象外（60回払いのみ）'; cls = 'warn'; }
+    else if (d.income >= plan.income)                   { status = '最低基準クリア'; cls = 'ok'; pass = true; }
+    else if (d.income <= RM_NG_INCOME)                  { status = '最低基準に届かず（頭金ありは要相談）'; cls = 'warn'; }
+    else                                                { status = '最低基準に届かず'; cls = 'ng'; }
     const basis = `${plan.name}：年収${man(plan.income)}以上・他社返済なし・60回払いのみ。`
       + (d.price > 0 && ![902000, 702000, 492800].includes(d.price) ? ' プラン価格以外の金額のため、近い上位プランの基準で照合しています。' : '');
     return { plan, status, cls, pass, basis };
@@ -483,12 +561,30 @@ body{
   function render() {
     const d = compute();
 
-    // セグメント・チップ
     $('household').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', Number(b.dataset.v) === d.hh));
     $('housing').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === state.housing));
     document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', Number(c.dataset.price) === d.price));
-
     $('incomeHint').textContent = d.income > 0 ? `${man(d.income)}（月あたり約${man(Math.round(d.income / 12 / 1000) * 1000)}）` : '源泉徴収票・給与明細ベースの税込額';
+
+    // 自社ローン
+    const L = d.loan;
+    $('loanbox').classList.toggle('invalid', !L.valid);
+    $('downBox').classList.toggle('error', !L.valid);
+    $('oMonthly').textContent = '¥ ' + yen(L.monthly);
+    $('oFirst').textContent = '¥ ' + yen(L.first);
+    $('oPrincipal').textContent = yen(L.principal) + '円';
+    $('oFee').textContent = yen(L.fee) + '円';
+    $('oSplit').textContent = yen(L.split) + '円';
+    $('oGrand').textContent = yen(L.grand) + '円';
+    $('oAnnual').textContent = yen(L.annual) + '円';
+
+    // 他社借入
+    d.debts.forEach(x => {
+      if (!x.d._foot) return;
+      x.d._foot.textContent = x.m > 0 && x.n > 0 ? `推定残高 約${yen(x.p)}円 ／ 残りの利息 約${yen(x.t - x.p)}円` : (x.m > 0 ? '残り期間を入れると推定残高を出します' : '返済額が未入力のため件数に数えていません');
+    });
+    $('debtCount').textContent = d.count + '件';
+    $('debtMonthly').textContent = yen(d.monthly) + '円';
 
     // 判定
     const stamp = $('stamp');
@@ -501,7 +597,6 @@ body{
     $('verdict').textContent = d.verdict;
     const c = $('comment'); c.textContent = d.comment; c.className = 'c ' + d.cType;
 
-    // 足切りチェック
     const set = (n, ok, detail, skip) => {
       const li = $('ck' + n), r = $('ck' + n + 'r');
       $('ck' + n + 'd').textContent = detail;
@@ -509,13 +604,12 @@ body{
       r.textContent = skip ? '―' : ok ? '通過' : 'NG';
       li.classList.toggle('decider', d.decider === n);
       const old = li.querySelector('.tag'); if (old) old.remove();
-      if (d.decider === n) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = '判定理由'; li.querySelector('.what').firstChild.after(t); }
+      if (d.decider === n) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = '判定理由'; li.querySelector('.what').insertBefore(t, li.querySelector('.what small')); }
     };
     set(1, d.count < COUNT_CUT, `いま ${d.count}件`, false);
     set(2, d.dti !== null && d.dti <= DTI_CUT, d.dti === null ? '年収が未入力' : `いま ${pct(d.dti)}（${yen(d.monthly * 12)} ÷ ${yen(d.income)}）`, d.dti === null);
-    set(3, d.score >= d.required, d.income > 0 ? `${yen(d.score)} ／ 必要 ${yen(d.required)}` : '年収が未入力', d.income <= 0);
+    set(3, d.score >= d.required, d.income > 0 ? `${yen(d.score)} ／ 年間支払額 ${yen(d.required)}` : '年収が未入力', d.income <= 0);
 
-    // ゲージ
     const hasScore = d.income > 0;
     $('gScore').textContent = hasScore ? yen(d.score) : '―';
     $('gScore').className = hasScore && d.score < 0 ? 'neg' : '';
@@ -524,18 +618,20 @@ body{
     $('gFill').style.width = hasScore ? Math.max(0, Math.min(100, d.score / max * 100)) + '%' : '0';
     $('gFill').classList.toggle('short', hasScore && d.score < d.required);
     $('gMark').style.left = Math.min(100, d.required / max * 100) + '%';
-    $('gNote').textContent = !hasScore ? '縦線が最低必要スコア'
-      : d.score >= d.required ? `必要スコアを ${yen(d.score - d.required)} 上回っています（${d.required > 0 ? (d.score / d.required).toFixed(1) : '―'}倍）`
-      : `必要スコアまで ${yen(d.required - d.score)} 足りません（年収換算で約${man(Math.ceil((d.required - d.score) / SCORE_MULT / 10000) * 10000)}）`;
+    $('gNote').textContent = !hasScore ? '縦線が自社ローンの年間支払額'
+      : d.score >= d.required ? `年間支払額を ${yen(d.score - d.required)} 上回っています（${d.required > 0 ? (d.score / d.required).toFixed(1) + '倍' : '―'}）`
+      : `年間支払額まで ${yen(d.required - d.score)} 足りません（年収換算で約${man(Math.ceil((d.required - d.score) / SCORE_MULT / 10000) * 10000)}）`;
+    const roomM = $('bRoom'); roomM.textContent = hasScore ? yen(d.score / 12) + '円' : '―'; roomM.className = hasScore && d.score < 0 ? 'neg' : '';
+    $('bMonthly').textContent = yen(L.monthly) + '円';
+    $('bDti').textContent = d.dtiWith === null ? '―' : pct(d.dtiWith, 1);
 
-    // RM照合
     const rm = rmCheck(d);
     $('rmPlan').textContent = rm.plan.name + 'の基準';
     const st = $('rmStatus'); st.textContent = rm.status;
     st.style.color = rm.cls === 'ok' ? 'var(--moss)' : rm.cls === 'ng' ? 'var(--shu)' : rm.cls === 'warn' ? 'var(--amber)' : 'var(--sub)';
     $('rmBasis').textContent = rm.basis;
     const ag = $('rmAgree');
-    if (d.idle || d.income <= 0 && d.count < 3) { ag.className = 'agree same'; ag.textContent = '年収を入れると照合します'; }
+    if (!L.valid || (d.income <= 0 && d.count < 3)) { ag.className = 'agree same'; ag.textContent = '年収と自社ローンの条件が揃うと照合します'; }
     else if (d.pass === rm.pass) { ag.className = 'agree same'; ag.textContent = d.pass ? 'シートとRMラインのどちらでもクリアです。' : 'シートとRMラインのどちらでもクリアになりません。'; }
     else if (d.pass) { ag.className = 'agree diff'; ag.textContent = 'シートは基準クリアですが、RMラインではクリアになりません。締結前にRMへ相談してください。'; }
     else { ag.className = 'agree diff'; ag.textContent = 'RMラインでは最低基準クリアですが、シートのスコアでは不合格です。基準の整合が取れていない箇所です。'; }
@@ -543,38 +639,31 @@ body{
     // 計算の中身
     const hhLabel = d.hh === 4 ? '4人以上' : d.hh + '人';
     const hcLabel = state.housing === 'with' ? '住宅コストあり' : '住宅コストなし';
-    $('lIncome').textContent = d.income > 0 ? yen(d.income) : '―';
+    $('lIncome').textContent = hasScore ? yen(d.income) : '―';
     $('lLiving').textContent = yen(d.living);
-    $('lLivingD').textContent = `${hhLabel}・${hcLabel}：基準 ${yen(d.livingBase)} ＋ アプラ基準 ${yen(APRA_ADD)}`;
+    $('lLivingD').textContent = `${hhLabel}・${hcLabel}（法的最低基準に準じた年額）`;
     $('lOther').textContent = yen(d.otherAnnual);
-    $('lOtherD').textContent = `${yen(d.monthly)} × 12か月 × 1.3`;
-    const roomEl = $('lRoom'); roomEl.textContent = d.income > 0 ? yen(d.room) : '―'; roomEl.className = 'amt' + (d.income > 0 && d.room < 0 ? ' neg' : '');
-    const scEl = $('lScore'); scEl.textContent = d.income > 0 ? yen(d.score) : '―'; scEl.className = 'amt' + (d.income > 0 && d.score < 0 ? ' neg' : '');
+    $('lOtherD').textContent = `${d.count}件 合計${yen(d.monthly)}円/月 × 12か月 × 1.3`;
+    const roomEl = $('lRoom'); roomEl.textContent = hasScore ? yen(d.room) : '―'; roomEl.className = 'amt' + (hasScore && d.room < 0 ? ' neg' : '');
+    const scEl = $('lScore'); scEl.textContent = hasScore ? yen(d.score) : '―'; scEl.className = 'amt' + (hasScore && d.score < 0 ? ' neg' : '');
     $('lReq').textContent = yen(d.required);
-    $('lReqD').textContent = `商品金額 ${yen(d.price)} × 24.39%（千円単位で四捨五入）＝ 年間支払額の目安`;
-
-    // 生活維持費テーブル
-    const tb = $('livingTable').querySelector('tbody');
-    tb.innerHTML = [1, 2, 3, 4].map(n => {
-      const cell = k => {
-        const v = LIVING_BASE[k][n - 1] + APRA_ADD;
-        const on = n === d.hh && k === state.housing;
-        return `<td class="${on ? 'on' : ''}">${yen(v)}<small>月 約${(v / 120000).toFixed(1)}万</small></td>`;
-      };
-      return `<tr><td>${n === 4 ? '4人以上' : n + '人'}</td>${cell('with')}${cell('none')}</tr>`;
-    }).join('');
+    $('lReqD').textContent = d.times >= 12
+      ? `元金${yen(d.price)}・頭金${yen(d.down)}・${d.times}回 → 2回目以降の月々 ${yen(L.monthly)}円 × 12か月`
+      : `元金${yen(d.price)}・頭金${yen(d.down)}・${d.times}回 → 1年以内に払い終わるため分割支払総額`;
 
     // 参考値
-    $('rMonths').textContent = d.months > 0 ? `${Math.round(d.months * 100) / 100}回` : '―';
-    $('rTotal').textContent = d.months > 0 ? yen(d.total) + '円' : '―';
-    $('rPV').textContent = d.months > 0 ? yen(d.pv) + '円' : '―';
-    $('rInt').textContent = d.months > 0 ? yen(d.interest) + '円' : '―';
+    const anyDebt = d.count > 0;
+    $('rTotal').textContent = anyDebt ? yen(d.total) + '円' : '―';
+    $('rPV').textContent = anyDebt ? yen(d.pv) + '円' : '―';
+    $('rInt').textContent = anyDebt ? yen(d.interest) + '円' : '―';
     $('rDti').textContent = d.dti === null ? '―' : pct(d.dti);
   }
 
+  // 年利の目安テーブル
+  $('rateTable').innerHTML = DEBT_TYPES.map(t => `<tr><td>${t.name}<small>${t.note}</small></td><td>${t.range}</td><td class="r">${t.rate.toFixed(1)}%</td></tr>`).join('');
+
   load(SAMPLE);
-  // テスト用に公開
-  window.__scoring = { compute, rmCheck, load };
+  window.__scoring = { compute, rmCheck, load, jishaLoan };
 })();
 </script>
 </body>
