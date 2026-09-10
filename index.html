@@ -283,7 +283,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
         <h3>足切りの順番（上から見て、最初に引っかかった項目が判定理由）</h3>
         <ol class="checks">
           <li id="ck1"><span class="what">他社借入が3件未満<small id="ck1d">―</small></span><span class="res skip" id="ck1r">―</span></li>
-          <li id="ck2"><span class="what">他社返済比率が年収の15%以下<small id="ck2d">―</small></span><span class="res skip" id="ck2r">―</span></li>
+          <li id="ck2"><span class="what">他社返済比率が年収の20%以下<small id="ck2d">―</small></span><span class="res skip" id="ck2r">―</span></li>
           <li id="ck3"><span class="what">算定スコアが自社ローンの年間支払額以上<small id="ck3d">―</small></span><span class="res skip" id="ck3r">―</span></li>
         </ol>
       </div>
@@ -350,7 +350,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
 (() => {
   // ───── 生活維持費（上乗せなし）─────
   const LIVING = { with: [1160000, 1770000, 2090000, 2400000], none: [900000, 1360000, 1610000, 1850000] };
-  const OTHER_MULT = 1.3, SCORE_MULT = 0.9, COUNT_CUT = 3, DTI_CUT = 0.15;
+  const OTHER_MULT = 1.3, SCORE_MULT = 0.9, COUNT_CUT = 3, DTI_CUT = 0.20;
 
   // ───── 自社ローン（PAYMENT PLANNER準拠）─────
   const JISHA_RATE = 0.08;
@@ -528,8 +528,8 @@ body{margin:0;background:var(--desk);color:var(--ink);
     if (!loan.valid)               { comment = `頭金は0円か、第1回支払額（${yen(loan.first)}円）以上にしてください`; cType = 'danger'; }
     else if (count >= COUNT_CUT)   { comment = '【危険】他社借入3件以上（多重債務リスク高/見送り推奨）'; cType = 'danger'; }
     else if (dti === null)         { comment = '年収を入れると判定します'; cType = 'none'; }
-    else if (dti > DTI_CUT)        { comment = '【危険】他社返済が年収の15%を超過（返済負担過多）'; cType = 'danger'; }
-    else if (monthly > 0)          { comment = '【懸念】他社借入あり（比率15%以内/2件以内）。慎重審査推奨'; cType = 'warn'; }
+    else if (dti > DTI_CUT)        { comment = '【危険】他社返済が年収の20%を超過（返済負担過多）'; cType = 'danger'; }
+    else if (monthly > 0)          { comment = '【懸念】他社借入あり（比率20%以内/2件以内）。慎重審査推奨'; cType = 'warn'; }
     else                           { comment = '懸念点なし'; cType = verdict === '基準クリア' ? 'ok' : 'none'; }
 
     return { price, down, times, income, hh, living, loan, debts, monthly, count, total, pv, interest: total - pv,
