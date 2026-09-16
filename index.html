@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>スコアリングシート｜自社ローン運用マニュアル</title>
+<title>スコアリングシート｜自社割賦運用マニュアル</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap" rel="stylesheet">
@@ -61,7 +61,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
 .seg button:last-child{border-right:none}
 .seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
 
-/* 自社ローンの試算結果 */
+/* 自社割賦の試算結果 */
 .loanbox{margin:10px 0 6px;border:1px solid var(--ink);border-radius:var(--radius);overflow:hidden}
 .loanbox .top{display:grid;grid-template-columns:1fr 1fr;background:var(--ink);color:#fff}
 .loanbox .top div{padding:12px 16px}
@@ -208,9 +208,9 @@ body{margin:0;background:var(--desk);color:var(--ink);
 
   <header class="masthead">
     <div>
-      <p class="book">自社ローン 運用マニュアル</p>
+      <p class="book">自社割賦 運用マニュアル</p>
       <h1>スコアリングシート</h1>
-      <p class="lead">自社ローンの条件と、ヒアリングした収入・他社借入を入れると、そのローンに耐えられるかをスコアで判定します。判定の根拠は下の「計算の中身」でそのまま説明できます。</p>
+      <p class="lead">自社割賦の条件と、ヒアリングした収入・他社借入を入れると、そのローンに耐えられるかをスコアで判定します。判定の根拠は下の「計算の中身」でそのまま説明できます。</p>
     </div>
   </header>
 
@@ -218,7 +218,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
     <section class="card form" aria-label="入力">
 
       <div class="group">
-        <h2>組もうとしている自社ローン</h2>
+        <h2>組もうとしている自社割賦</h2>
         <div class="field">
           <label for="price">元金（税込）</label>
           <div class="inbox"><input id="price" inputmode="numeric" autocomplete="off"><span class="unit">円</span></div>
@@ -267,7 +267,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
           <div class="hint" id="incomeHint">源泉徴収票・給与明細ベースの税込額</div>
         </div>
         <div class="field">
-          <span class="label" id="hhLabel">世帯人数</span>
+          <span class="label" id="hhLabel">世帯人数<small style="display:block;font-size:11px;color:var(--sub);line-height:1.4">本人を含む</small></span>
           <div class="seg" role="group" aria-labelledby="hhLabel" id="household">
             <button type="button" data-v="1">1人</button><button type="button" data-v="2">2人</button><button type="button" data-v="3">3人</button><button type="button" data-v="4">4人以上</button>
           </div>
@@ -282,7 +282,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
 
       <div class="group">
         <h2>他社からの借入</h2>
-        <p class="gdesc">借入があれば1社ずつ追加してください。種類を選ぶと年利の目安が入ります（手で変更可）。</p>
+        <p class="gdesc">借入があれば1社ずつ追加してください。種類を選ぶと年利の目安が入ります（手で変更可）。<br><b style="color:var(--amber)">返済内容により審査結果が異なるため、該当する返済内容を正確に選択してください。</b></p>
         <div class="debts" id="debts"></div>
         <button type="button" class="add" id="addDebt">＋ 借入を追加</button>
         <div class="debt-sum"><span>合計 <b id="debtCount">0件</b></span><span>毎月 <b id="debtMonthly">0円</b></span></div>
@@ -304,8 +304,8 @@ body{margin:0;background:var(--desk);color:var(--ink);
         <h3>足切りの順番（上から見て、最初に引っかかった項目が判定理由）</h3>
         <ol class="checks">
           <li id="ck1"><span class="what">他社借入が3件未満<small id="ck1d">―</small></span><span class="res skip" id="ck1r">―</span></li>
-          <li id="ck2"><span class="what">返済比率（自社ローン込み）が年収の20%以下<small id="ck2d">―</small></span><span class="res skip" id="ck2r">―</span></li>
-          <li id="ck3"><span class="what">算定スコアが自社ローンの年間支払額以上<small id="ck3d">―</small></span><span class="res skip" id="ck3r">―</span></li>
+          <li id="ck2"><span class="what">返済比率（自社割賦込み）が年収の20%以下<small id="ck2d">―</small></span><span class="res skip" id="ck2r">―</span></li>
+          <li id="ck3"><span class="what">算定スコアが自社割賦の年間支払額以上<small id="ck3d">―</small></span><span class="res skip" id="ck3r">―</span></li>
         </ol>
       </div>
 
@@ -317,12 +317,12 @@ body{margin:0;background:var(--desk);color:var(--ink);
       </div>
 
       <div class="pane">
-        <div class="gauge-row"><span>算定スコア<br><b id="gScore">―</b></span><span style="text-align:right">自社ローンの年間支払額<br><b id="gReq">―</b></span></div>
+        <div class="gauge-row"><span>算定スコア<br><b id="gScore">―</b></span><span style="text-align:right">自社割賦の年間支払額<br><b id="gReq">―</b></span></div>
         <div class="gauge" aria-hidden="true"><div class="gauge-fill" id="gFill" style="width:0"></div><div class="gauge-mark" id="gMark" style="left:50%"></div></div>
-        <p class="gauge-note" id="gNote">縦線が自社ローンの年間支払額</p>
+        <p class="gauge-note" id="gNote">縦線が自社割賦の年間支払額</p>
         <dl class="bear">
           <dt>月あたりの余力<span class="fx" id="fxRoomM">算定スコア ÷ 12</span></dt><dd id="bRoom">―</dd>
-          <dt>自社ローンの月々（2回目以降）</dt><dd id="bMonthly">―</dd>
+          <dt>自社割賦の月々（2回目以降）</dt><dd id="bMonthly">―</dd>
         </dl>
       </div>
 
@@ -337,7 +337,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
   <div class="detail">
     <section class="card">
       <h2>計算の中身</h2>
-      <p class="desc">算定スコア ＝（税込年収 − 生活維持費 − 他社の毎月返済×12×1.3）× 0.405。これが自社ローンの年間支払額以上ならクリアです。この式と返済比率20%を年収について解いたものが、右の「最低年収」です。算式の全体は下の「算式一覧」にまとめました。</p>
+      <p class="desc">算定スコア ＝（税込年収 − 生活維持費 − 他社の毎月返済×12×1.3）× 0.405。これが自社割賦の年間支払額以上ならクリアです。この式と返済比率20%を年収について解いたものが、右の「最低年収」です。算式の全体は下の「算式一覧」にまとめました。</p>
       <table class="ledger"><tbody>
         <tr><td class="op"></td><td class="name">税込年収</td><td class="amt" id="lIncome">―</td></tr>
         <tr><td class="op">−</td><td class="name">生活維持費<small id="lLivingD">―</small></td><td class="amt" id="lLiving">―</td></tr>
@@ -345,7 +345,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
         <tr><td class="op">＝</td><td class="name">支払余力</td><td class="amt" id="lRoom">―</td></tr>
         <tr class="sub"><td class="op">×</td><td class="name">0.405<small>生活費を引いた残りのうち、自社の返済に回してよい割合</small></td><td class="amt"></td></tr>
         <tr class="total"><td class="op">＝</td><td class="name">算定スコア</td><td class="amt" id="lScore">―</td></tr>
-        <tr class="cmp"><td class="op">vs</td><td class="name">自社ローンの年間支払額<small id="lReqD">―</small></td><td class="amt" id="lReq">―</td></tr>
+        <tr class="cmp"><td class="op">vs</td><td class="name">自社割賦の年間支払額<small id="lReqD">―</small></td><td class="amt" id="lReq">―</td></tr>
       </tbody></table>
     </section>
 
@@ -358,8 +358,8 @@ body{margin:0;background:var(--desk);color:var(--ink);
       <p class="refs-title">参考値</p>
       <p class="refs-desc">他社ローンの残りを把握するための数字です。判定には使っていません。</p>
       <dl class="refs">
-        <dt>他社の返済総額（残り）<span class="fx">Σ（毎月返済額 × 残り期間×12）</span></dt><dd id="rTotal">―</dd>
-        <dt>他社の推定借入残高（元本）<span class="fx">Σ 毎月返済額 ×（1 −（1+r)^−n）÷ r　r＝年利÷12、n＝残り月数</span></dt><dd id="rPV">―</dd>
+        <dt>他社の返済総額（残り）<span class="fx">Σ（毎月返済額 × 残り期間（ヶ月））</span></dt><dd id="rTotal">―</dd>
+        <dt>他社の推定借入残高（元本）<span class="fx">Σ 毎月返済額 ×（1 −（1+r)^−n）÷ r　r＝年利÷12、n＝残り期間（ヶ月）</span></dt><dd id="rPV">―</dd>
         <dt>他社の支払利息合計（残り）<span class="fx">返済総額 − 推定借入残高</span></dt><dd id="rInt">―</dd>
         <dt>他社返済比率（対年収）<span class="fx">他社の毎月返済合計 × 12 ÷ 税込年収</span></dt><dd id="rDti">―</dd>
       </dl>
@@ -389,7 +389,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
   const LIVING = { with: [1160000, 1770000, 2090000, 2400000], none: [900000, 1360000, 1610000, 1850000] };
   const OTHER_MULT = 1.3, SCORE_MULT = 0.405, COUNT_CUT = 3, DTI_CUT = 0.20;
 
-  // ───── 自社ローン（PAYMENT PLANNER準拠）─────
+  // ───── 自社割賦（PAYMENT PLANNER準拠）─────
   const JISHA_RATE = 0.08;
   function jishaLoan(price, down, times) {
     const principal = price - down;
@@ -477,9 +477,9 @@ body{margin:0;background:var(--desk);color:var(--ink);
   document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { $('price').value = fmtInput(Number(c.dataset.price), true); render(); }));
 
   // ───── 他社借入の行 ─────
-  function addDebt(d = { type: 'sarakin', monthly: '', years: '' }, focus = false) {
+  function addDebt(d = { type: 'sarakin', monthly: '', months: '' }, focus = false) {
     const t = typeOf(d.type);
-    state.debts.push({ id: ++seq, type: t.key, monthly: d.monthly ?? '', years: d.years ?? '', rate: d.rate ?? t.rate });
+    state.debts.push({ id: ++seq, type: t.key, monthly: d.monthly ?? '', months: d.months ?? '', rate: d.rate ?? t.rate });
     buildDebts();
     if (focus) { const rows = $('debts').querySelectorAll('.debt'); rows[rows.length - 1].querySelector('select').focus(); }
     render();
@@ -498,7 +498,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
         </div>
         <div class="debt-fields">
           <div class="f1"><label>毎月の返済額</label><div class="inbox"><input data-k="monthly" inputmode="numeric" autocomplete="off" value="${fmtInput(d.monthly, true)}"><span class="unit">円</span></div></div>
-          <div><label>残り期間</label><div class="inbox"><input data-k="years" inputmode="decimal" autocomplete="off" value="${fmtInput(d.years)}"><span class="unit">年</span></div></div>
+          <div><label>残り期間</label><div class="inbox"><input data-k="months" inputmode="numeric" autocomplete="off" value="${fmtInput(d.months)}"><span class="unit">ヶ月</span></div></div>
           <div><label>年利</label><div class="inbox"><input data-k="rate" inputmode="decimal" autocomplete="off" value="${fmtInput(d.rate)}"><span class="unit">%</span></div></div>
         </div>
         <p class="debt-foot" data-foot>―</p>`;
@@ -530,7 +530,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
     timesSel.value = String(o.times);
     state.household = o.household; state.housing = o.housing;
     state.debts = []; seq = 0;
-    o.debts.forEach(d => { const t = typeOf(d.type); state.debts.push({ id: ++seq, type: t.key, monthly: d.monthly, years: d.years, rate: d.rate ?? t.rate }); });
+    o.debts.forEach(d => { const t = typeOf(d.type); state.debts.push({ id: ++seq, type: t.key, monthly: d.monthly, months: d.months, rate: d.rate ?? t.rate }); });
     buildDebts(); render();
   }
 
@@ -546,8 +546,8 @@ body{margin:0;background:var(--desk);color:var(--ink);
 
     let monthly = 0, count = 0, total = 0, pv = 0;
     const debts = state.debts.map(d => {
-      const m = Number(d.monthly) || 0, y = Number(d.years) || 0, rate = (Number(d.rate) || 0) / 100;
-      const n = y * 12, r = rate / 12;
+      const m = Number(d.monthly) || 0, rate = (Number(d.rate) || 0) / 100;
+      const n = Number(d.months) || 0, r = rate / 12;
       const t = m * n;
       const p = n <= 0 ? 0 : (r === 0 ? t : m * (1 - Math.pow(1 + r, -n)) / r);
       if (m > 0) { count++; monthly += m; total += t; pv += p; }
@@ -579,7 +579,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
     if (!loan.valid)               { comment = `頭金は0円か、第1回支払額（${yen(loan.first)}円）以上にしてください`; cType = 'danger'; }
     else if (income <= 0)          { comment = '年収を入れると判定します'; cType = 'none'; }
     else if (count >= COUNT_CUT)   { comment = '【危険】他社借入3件以上（多重債務リスク高/見送り推奨）'; cType = 'danger'; }
-    else if (dtiWith > DTI_CUT)    { comment = '【危険】自社ローン込みの返済が年収の20%を超過（返済負担過多）'; cType = 'danger'; }
+    else if (dtiWith > DTI_CUT)    { comment = '【危険】自社割賦込みの返済が年収の20%を超過（返済負担過多）'; cType = 'danger'; }
     else if (monthly > 0)          { comment = '【懸念】他社借入あり（自社込み比率20%以内/他社2件以内）。慎重審査推奨'; cType = 'warn'; }
     else                           { comment = '懸念点なし'; cType = verdict === '基準クリア' ? 'ok' : 'none'; }
 
@@ -608,7 +608,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
     document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', Number(c.dataset.price) === d.price));
     $('incomeHint').textContent = d.income > 0 ? `${man(d.income)}（月あたり約${man(Math.round(d.income / 12 / 1000) * 1000)}）` : '源泉徴収票・給与明細ベースの税込額';
 
-    // 自社ローン
+    // 自社割賦
     const L = d.loan;
     $('loanbox').classList.toggle('invalid', !L.valid);
     $('downBox').classList.toggle('error', !L.valid);
@@ -623,7 +623,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
     // 他社借入
     d.debts.forEach(x => {
       if (!x.d._foot) return;
-      x.d._foot.textContent = x.m > 0 && x.n > 0 ? `推定残高 約${yen(x.p)}円 ／ 残りの利息 約${yen(x.t - x.p)}円` : (x.m > 0 ? '残り期間を入れると推定残高を出します' : '返済額が未入力のため件数に数えていません');
+      x.d._foot.textContent = x.m > 0 && x.n > 0 ? `推定残高 約${yen(x.p)}円 ／ 残りの利息 約${yen(x.t - x.p)}円` : (x.m > 0 ? '残り期間（ヶ月）を入れると推定残高を出します' : '返済額が未入力のため件数に数えていません');
     });
     $('debtCount').textContent = d.count + '件';
     $('debtMonthly').textContent = yen(d.monthly) + '円';
@@ -675,7 +675,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
     $('gFill').style.width = hasScore ? Math.max(0, Math.min(100, d.score / max * 100)) + '%' : '0';
     $('gFill').classList.toggle('short', hasScore && d.score < d.required);
     $('gMark').style.left = Math.min(100, d.required / max * 100) + '%';
-    $('gNote').textContent = !hasScore ? '縦線が自社ローンの年間支払額'
+    $('gNote').textContent = !hasScore ? '縦線が自社割賦の年間支払額'
       : d.score >= d.required ? `年間支払額を ${yen(d.score - d.required)} 上回っています（${d.required > 0 ? (d.score / d.required).toFixed(1) + '倍' : '―'}）`
       : `年間支払額まで ${yen(d.required - d.score)} 足りません（年収換算で約${man(Math.ceil((d.required - d.score) / SCORE_MULT / 10000) * 10000)}）`;
     const roomM = $('bRoom'); roomM.textContent = hasScore ? yen(d.score / 12) + '円' : '―'; roomM.className = hasScore && d.score < 0 ? 'neg' : '';
@@ -718,7 +718,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
     const hasY = d.income > 0;
     const q = v => hasY ? v : '―';
 
-    // 自社ローン試算の各行
+    // 自社割賦試算の各行
     const fx = (id, t) => { const el = $(id); if (el) el.innerHTML = t; };
     fx('fxMonthly', `元金の元利均等 ${yen(exact)}円 → 100円未満切り捨て`);
     fx('fxFirst', `月々×${n}回との差額を第1回で調整（100円未満切り上げ）`);
@@ -731,7 +731,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
 
     // 一覧表
     const rows = [
-      ['head', '自社ローンの試算（実質年率8.0%・元利均等）'],
+      ['head', '自社割賦の試算（実質年率8.0%・元利均等）'],
       ['分割対象金額', '元金 − 頭金', `${yen(d.price)} − ${yen(d.down)} ＝ ${yen(pr)}円`],
       ['月々（2回目以降）', 'ROUNDDOWN( 分割対象金額 × r ×(1+r)^n ÷ ((1+r)^n − 1) , 百円 )　r＝0.08÷12、n＝支払回数',
         `端数処理前 ${yen(exact)}円 → ${yen(L.monthly)}円（n＝${n}）`],
@@ -753,7 +753,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
       ['head', '足切り（上から順に判定）'],
       ['① 他社件数', '返済額が入っている他社の件数 < 3', `${d.count}件 ${d.count < COUNT_CUT ? '< 3 → OK' : '≧ 3 → NG'}`, '自社分は件数に数えません。'],
       ['② 返済比率', '（他社の毎月返済 × 12 ＋ 自社の年間支払額）÷ 税込年収 ≦ 20%',
-        hasY ? `（${yen(d.monthly * 12)} ＋ ${yen(d.required)}）÷ ${yen(d.income)} ＝ ${pct(d.dtiWith)}` : '年収が未入力', '自社ローン込みで判定します。'],
+        hasY ? `（${yen(d.monthly * 12)} ＋ ${yen(d.required)}）÷ ${yen(d.income)} ＝ ${pct(d.dtiWith)}` : '年収が未入力', '自社割賦込みで判定します。'],
       ['③ スコア', '算定スコア ≧ 自社の年間支払額 A', hasY ? `${yen(d.score)} ${d.score >= d.required ? '≧' : '<'} ${yen(d.required)}` : '年収が未入力'],
 
       ['head', '最低年収（②③を年収について解いたもの）'],
@@ -765,8 +765,8 @@ body{margin:0;background:var(--desk);color:var(--ink);
         'プランごとに決め打ちせず、生活維持費・他社返済・支払回数・頭金から毎回計算します。現場で共有されている満額170万／MPA・VPA161万／MPC・VPC145万は、単身・住宅あり・他社返済なし・頭金なし・60回のときの目安です。'],
 
       ['head', '参考値（判定には使いません）'],
-      ['推定借入残高', 'Σ 毎月返済額 ×（1 −(1+r)^−n）÷ r　r＝年利÷12、n＝残り期間×12', d.count ? `${yen(d.pv)}円` : '他社借入なし'],
-      ['返済総額（残り）', 'Σ 毎月返済額 × 残り期間 × 12', d.count ? `${yen(d.total)}円` : '他社借入なし'],
+      ['推定借入残高', 'Σ 毎月返済額 ×（1 −(1+r)^−n）÷ r　r＝年利÷12、n＝残り期間（ヶ月）', d.count ? `${yen(d.pv)}円` : '他社借入なし'],
+      ['返済総額（残り）', 'Σ 毎月返済額 × 残り期間（ヶ月）', d.count ? `${yen(d.total)}円` : '他社借入なし'],
       ['支払利息合計', '返済総額 − 推定借入残高', d.count ? `${yen(d.total)} − ${yen(d.pv)} ＝ ${yen(d.interest)}円` : '他社借入なし'],
       ['他社返済比率', '他社の毎月返済 × 12 ÷ 税込年収', hasY ? `${yen(d.monthly * 12)} ÷ ${yen(d.income)} ＝ ${pct(d.dti)}` : '年収が未入力']
     ];
