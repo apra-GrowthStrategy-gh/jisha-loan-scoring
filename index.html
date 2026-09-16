@@ -177,6 +177,11 @@ body{margin:0;background:var(--desk);color:var(--ink);
 .refs{margin:12px 0 0;display:grid;grid-template-columns:1fr auto;font-size:14px}
 .refs dt,.refs dd{padding:7px 0;border-bottom:1px solid var(--rule-soft);margin:0}
 .refs dd{text-align:right;padding-left:16px}
+.minpane{background:#F6F8FB}
+.minrow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.minv{font-size:28px;font-weight:700;line-height:1.2}
+.minsub{font-size:12px;color:var(--sub)}
+.minref{font-size:12px;color:var(--ink-2);margin:8px 0 0;line-height:1.55;padding:6px 10px;background:#fff;border:1px solid var(--rule-soft);border-radius:4px}
 .fx{display:block;font-size:11.5px;color:#4A5876;line-height:1.55;margin-top:3px;
   font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;word-break:break-word}
 .fx .v{color:var(--ink);font-weight:700}
@@ -298,11 +303,17 @@ body{margin:0;background:var(--desk);color:var(--ink);
       <div class="pane">
         <h3>足切りの順番（上から見て、最初に引っかかった項目が判定理由）</h3>
         <ol class="checks">
-          <li id="ck1"><span class="what">年収がプランごとの下限以上<small id="ck1d">―</small></span><span class="res skip" id="ck1r">―</span></li>
-          <li id="ck2"><span class="what">他社借入が3件未満<small id="ck2d">―</small></span><span class="res skip" id="ck2r">―</span></li>
-          <li id="ck3"><span class="what">返済比率（自社ローン込み）が年収の20%以下<small id="ck3d">―</small></span><span class="res skip" id="ck3r">―</span></li>
-          <li id="ck4"><span class="what">算定スコアが自社ローンの年間支払額以上<small id="ck4d">―</small></span><span class="res skip" id="ck4r">―</span></li>
+          <li id="ck1"><span class="what">他社借入が3件未満<small id="ck1d">―</small></span><span class="res skip" id="ck1r">―</span></li>
+          <li id="ck2"><span class="what">返済比率（自社ローン込み）が年収の20%以下<small id="ck2d">―</small></span><span class="res skip" id="ck2r">―</span></li>
+          <li id="ck3"><span class="what">算定スコアが自社ローンの年間支払額以上<small id="ck3d">―</small></span><span class="res skip" id="ck3r">―</span></li>
         </ol>
+      </div>
+
+      <div class="pane minpane">
+        <h3>この条件での最低年収（算出値）</h3>
+        <div class="minrow"><span class="minv" id="minIncome">―</span><span class="minsub" id="minBy">―</span></div>
+        <p class="fx" id="minFx">―</p>
+        <p class="minref" id="minRef">―</p>
       </div>
 
       <div class="pane">
@@ -326,13 +337,13 @@ body{margin:0;background:var(--desk);color:var(--ink);
   <div class="detail">
     <section class="card">
       <h2>計算の中身</h2>
-      <p class="desc">算定スコア ＝（税込年収 − 生活維持費 − 他社の毎月返済×12×1.3）× 0.9。これが自社ローンの年間支払額以上ならクリアです。各行の下に、いまの入力を当てはめた計算を出しています。算式の全体は下の「算式一覧」にまとめました。</p>
+      <p class="desc">算定スコア ＝（税込年収 − 生活維持費 − 他社の毎月返済×12×1.3）× 0.405。これが自社ローンの年間支払額以上ならクリアです。この式と返済比率20%を年収について解いたものが、右の「最低年収」です。算式の全体は下の「算式一覧」にまとめました。</p>
       <table class="ledger"><tbody>
         <tr><td class="op"></td><td class="name">税込年収</td><td class="amt" id="lIncome">―</td></tr>
         <tr><td class="op">−</td><td class="name">生活維持費<small id="lLivingD">―</small></td><td class="amt" id="lLiving">―</td></tr>
         <tr class="sub"><td class="op">−</td><td class="name">他社年間返済額（1.3倍で厳しめに評価）<small id="lOtherD">―</small></td><td class="amt" id="lOther">―</td></tr>
         <tr><td class="op">＝</td><td class="name">支払余力</td><td class="amt" id="lRoom">―</td></tr>
-        <tr class="sub"><td class="op">×</td><td class="name">0.9<small>割賦販売法ベースの掛け目</small></td><td class="amt"></td></tr>
+        <tr class="sub"><td class="op">×</td><td class="name">0.405<small>生活費を引いた残りのうち、自社の返済に回してよい割合</small></td><td class="amt"></td></tr>
         <tr class="total"><td class="op">＝</td><td class="name">算定スコア</td><td class="amt" id="lScore">―</td></tr>
         <tr class="cmp"><td class="op">vs</td><td class="name">自社ローンの年間支払額<small id="lReqD">―</small></td><td class="amt" id="lReq">―</td></tr>
       </tbody></table>
@@ -376,7 +387,7 @@ body{margin:0;background:var(--desk);color:var(--ink);
 (() => {
   // ───── 生活維持費（上乗せなし）─────
   const LIVING = { with: [1160000, 1770000, 2090000, 2400000], none: [900000, 1360000, 1610000, 1850000] };
-  const OTHER_MULT = 1.3, SCORE_MULT = 0.9, COUNT_CUT = 3, DTI_CUT = 0.20;
+  const OTHER_MULT = 1.3, SCORE_MULT = 0.405, COUNT_CUT = 3, DTI_CUT = 0.20;
 
   // ───── 自社ローン（PAYMENT PLANNER準拠）─────
   const JISHA_RATE = 0.08;
@@ -407,14 +418,13 @@ body{margin:0;background:var(--desk);color:var(--ink);
   ];
   const typeOf = k => DEBT_TYPES.find(t => t.key === k) || DEBT_TYPES[DEBT_TYPES.length - 1];
 
-  // ───── 年収の下限（RM 堀内さん共有の最低基準 2026/9/10）─────
-  // プラン価格以外の金額は、金額以上で最も近いプランの下限を使う
-  const INCOME_FLOOR = [
-    { name: '満額（MP / VP）', minPrice: 792000.01, income: 1700000 },
-    { name: 'MPA / VPA',       minPrice: 492800.01, income: 1610000 },
-    { name: 'MPC / VPC',       minPrice: 0,         income: 1450000 }
+  // ───── 参考：現場で共有されている最低年収の目安（2026/9/10）─────
+  // 判定には使わず、算出した最低年収と見比べるためだけに持つ
+  const REF_LINE = [
+    { name: '満額（MP / VP）', price: 902000, income: 1700000 },
+    { name: 'MPA / VPA',       price: 792000, income: 1610000 },
+    { name: 'MPC / VPC',       price: 492800, income: 1450000 }
   ];
-  const PLAN_PRICES = [902000, 792000, 492800];
 
   // 初期値
   const DEFAULTS = { price: 902000, down: 0, times: 60, income: 0, household: 1, housing: 'with', debts: [] };
@@ -551,29 +561,31 @@ body{margin:0;background:var(--desk);color:var(--ink);
     const dti = income > 0 ? (monthly * 12) / income : null;
     const dtiWith = income > 0 ? (monthly * 12 + loan.annual) / income : null;
 
-    const plan = INCOME_FLOOR.find(p => price >= p.minPrice) || INCOME_FLOOR[INCOME_FLOOR.length - 1];
-    const floorOk = income >= plan.income;
+    // 最低年収：スコア条件と返済比率条件を年収について解き、厳しい方を採る
+    const minByScore = living + otherAnnual + required / SCORE_MULT;   // スコア条件
+    const minByRatio = (monthly * 12 + required) / DTI_CUT;            // 返済比率条件
+    const minIncome = Math.max(minByScore, minByRatio);
+    const minBy = minByRatio > minByScore ? 'ratio' : 'score';
 
     let verdict, decider = 0, idle = false;
     if (!loan.valid)               { verdict = '頭金を見直してください'; idle = true; }
     else if (income <= 0)          { verdict = '入力待ち'; idle = true; }
-    else if (!floorOk)             { verdict = '不合格（年収が下限未満）'; decider = 1; }
-    else if (count >= COUNT_CUT)   { verdict = '不合格（借入件数多）'; decider = 2; }
-    else if (dtiWith > DTI_CUT)    { verdict = '不合格（返済負担過多）'; decider = 3; }
+    else if (count >= COUNT_CUT)   { verdict = '不合格（借入件数多）'; decider = 1; }
+    else if (dtiWith > DTI_CUT)    { verdict = '不合格（返済負担過多）'; decider = 2; }
     else if (score >= required)    { verdict = '基準クリア'; }
-    else                           { verdict = '不合格（スコア不足）'; decider = 4; }
+    else                           { verdict = '不合格（スコア不足）'; decider = 3; }
 
     let comment, cType;
     if (!loan.valid)               { comment = `頭金は0円か、第1回支払額（${yen(loan.first)}円）以上にしてください`; cType = 'danger'; }
     else if (income <= 0)          { comment = '年収を入れると判定します'; cType = 'none'; }
-    else if (!floorOk)             { comment = `【危険】年収が${plan.name}の下限（${man(plan.income)}）に届いていません`; cType = 'danger'; }
     else if (count >= COUNT_CUT)   { comment = '【危険】他社借入3件以上（多重債務リスク高/見送り推奨）'; cType = 'danger'; }
     else if (dtiWith > DTI_CUT)    { comment = '【危険】自社ローン込みの返済が年収の20%を超過（返済負担過多）'; cType = 'danger'; }
     else if (monthly > 0)          { comment = '【懸念】他社借入あり（自社込み比率20%以内/他社2件以内）。慎重審査推奨'; cType = 'warn'; }
     else                           { comment = '懸念点なし'; cType = verdict === '基準クリア' ? 'ok' : 'none'; }
 
     return { price, down, times, income, hh, living, loan, debts, monthly, count, total, pv, interest: total - pv,
-             required, otherAnnual, room, score, dti, dtiWith, plan, floorOk, verdict, decider, idle, comment, cType, pass: verdict === '基準クリア' };
+             required, otherAnnual, room, score, dti, dtiWith, minIncome, minByScore, minByRatio, minBy,
+             verdict, decider, idle, comment, cType, pass: verdict === '基準クリア' };
   }
 
   function rmCheck(d) {
@@ -636,12 +648,24 @@ body{margin:0;background:var(--desk);color:var(--ink);
       const old = li.querySelector('.tag'); if (old) old.remove();
       if (d.decider === n) { const t = document.createElement('span'); t.className = 'tag'; t.textContent = '判定理由'; li.querySelector('.what').insertBefore(t, li.querySelector('.what small')); }
     };
-    const odd = d.price > 0 && !PLAN_PRICES.includes(d.price) ? '（プラン価格以外のため上位プランの下限）' : '';
-    set(1, d.floorOk, `税込年収 ≧ プランの下限　→　` + (d.income > 0 ? `${yen(d.income)} ≧ ${yen(d.plan.income)}（${d.plan.name}）` : `${d.plan.name}は${yen(d.plan.income)}円以上`) + odd, d.income <= 0);
-    set(2, d.count < COUNT_CUT, `他社の件数 < 3　→　${d.count}件 < 3`, false);
-    set(3, d.dtiWith !== null && d.dtiWith <= DTI_CUT, d.dtiWith === null ? '（他社の年間返済 ＋ 自社の年間支払額）÷ 年収 ≦ 20%　→　年収が未入力'
+    set(1, d.count < COUNT_CUT, `他社の件数 < 3　→　${d.count}件 < 3`, false);
+    set(2, d.dtiWith !== null && d.dtiWith <= DTI_CUT, d.dtiWith === null ? '（他社の年間返済 ＋ 自社の年間支払額）÷ 年収 ≦ 20%　→　年収が未入力'
       : `（他社 ${yen(d.monthly * 12)} ＋ 自社 ${yen(d.loan.annual)}）÷ ${yen(d.income)} ＝ ${pct(d.dtiWith)} ≦ 20%`, d.dtiWith === null);
-    set(4, d.score >= d.required, d.income > 0 ? `算定スコア ≧ 自社の年間支払額　→　${yen(d.score)} ≧ ${yen(d.required)}` : '算定スコア ≧ 自社の年間支払額　→　年収が未入力', d.income <= 0);
+    set(3, d.score >= d.required, d.income > 0 ? `算定スコア ≧ 自社の年間支払額　→　${yen(d.score)} ≧ ${yen(d.required)}` : '算定スコア ≧ 自社の年間支払額　→　年収が未入力', d.income <= 0);
+
+    // 最低年収
+    $('minIncome').textContent = yen(d.minIncome) + '円';
+    $('minBy').textContent = d.minBy === 'ratio' ? '返済比率20%の条件で決まっています' : 'スコアの条件で決まっています';
+    $('minFx').innerHTML = d.minBy === 'ratio'
+      ? `（他社の年間返済 ＋ 自社の年間支払額）÷ 20%<br>＝（${yen(d.monthly * 12)} ＋ ${yen(d.required)}）÷ 0.2 ＝ <span class="v">${yen(d.minIncome)}円</span>`
+      : `生活維持費 ＋ 他社年間返済額 ＋ 自社の年間支払額 ÷ 0.405<br>＝ ${yen(d.living)} ＋ ${yen(d.otherAnnual)} ＋ ${yen(d.required)} ÷ 0.405 ＝ <span class="v">${yen(d.minIncome)}円</span>`;
+    const ref = REF_LINE.find(r => r.price === d.price);
+    const cond = d.count === 0 && d.times === 60 && d.down === 0 && d.hh === 1 && state.housing === 'with';
+    $('minRef').innerHTML = !ref
+      ? `現場で共有されている目安（満額170万円／MPA・VPA161万円／MPC・VPC145万円）は、プラン価格ちょうどのときの参考値です。`
+      : cond
+        ? `現場で共有されている目安：${ref.name} ${man(ref.income)}　→　同じ前提での算出値は ${man(d.minIncome)}`
+        : `現場で共有されている目安：${ref.name} ${man(ref.income)}　※目安は「単身・住宅あり・他社返済なし・頭金なし・60回」での値です。いまの条件とは前提が違います。`;
 
     const hasScore = d.income > 0;
     $('gScore').textContent = hasScore ? yen(d.score) : '―';
@@ -723,15 +747,22 @@ body{margin:0;background:var(--desk);color:var(--ink);
         '割賦販売法施行規則の生活維持費の表。上乗せなし。'],
       ['他社年間返済額', '他社の毎月返済合計 × 12 × 1.3', `${yen(d.monthly)} × 12 × 1.3 ＝ ${yen(d.otherAnnual)}円`, '1.3倍は厳しめに見るための社内設定。'],
       ['支払余力', '税込年収 − 生活維持費 − 他社年間返済額', hasY ? `${yen(d.income)} − ${yen(d.living)} − ${yen(d.otherAnnual)} ＝ ${yen(d.room)}円` : '年収が未入力'],
-      ['算定スコア', '支払余力 × 0.9', hasY ? `${yen(d.room)} × 0.9 ＝ ${yen(d.score)}円` : '年収が未入力', '0.9は割賦販売法の包括支払可能見込額×90%に由来。'],
+      ['算定スコア', '支払余力 × 0.405', hasY ? `${yen(d.room)} × 0.405 ＝ ${yen(d.score)}円` : '年収が未入力',
+        '生活費を引いた残りのうち、自社の返済に回してよい割合。割賦販売法のカード枠の上限は90%だが、自社割賦はリスクを全部自社で持つため0.405に設定（2026/9/14 合意）。'],
 
       ['head', '足切り（上から順に判定）'],
-      ['① 年収の下限', '税込年収 ≧ プランごとの下限（満額170万／MPA・VPA161万／MPC・VPC145万）',
-        hasY ? `${yen(d.income)} ${d.floorOk ? '≧' : '<'} ${yen(d.plan.income)}（${d.plan.name}）` : '年収が未入力'],
-      ['② 他社件数', '返済額が入っている他社の件数 < 3', `${d.count}件 ${d.count < COUNT_CUT ? '< 3 → OK' : '≧ 3 → NG'}`, '自社分は件数に数えません。'],
-      ['③ 返済比率', '（他社の毎月返済 × 12 ＋ 自社の年間支払額）÷ 税込年収 ≦ 20%',
+      ['① 他社件数', '返済額が入っている他社の件数 < 3', `${d.count}件 ${d.count < COUNT_CUT ? '< 3 → OK' : '≧ 3 → NG'}`, '自社分は件数に数えません。'],
+      ['② 返済比率', '（他社の毎月返済 × 12 ＋ 自社の年間支払額）÷ 税込年収 ≦ 20%',
         hasY ? `（${yen(d.monthly * 12)} ＋ ${yen(d.required)}）÷ ${yen(d.income)} ＝ ${pct(d.dtiWith)}` : '年収が未入力', '自社ローン込みで判定します。'],
-      ['④ スコア', '算定スコア ≧ 自社の年間支払額 A', hasY ? `${yen(d.score)} ${d.score >= d.required ? '≧' : '<'} ${yen(d.required)}` : '年収が未入力'],
+      ['③ スコア', '算定スコア ≧ 自社の年間支払額 A', hasY ? `${yen(d.score)} ${d.score >= d.required ? '≧' : '<'} ${yen(d.required)}` : '年収が未入力'],
+
+      ['head', '最低年収（②③を年収について解いたもの）'],
+      ['スコア条件から', '生活維持費 ＋ 他社年間返済額 ＋ 年間支払額 A ÷ 0.405',
+        `${yen(d.living)} ＋ ${yen(d.otherAnnual)} ＋ ${yen(d.required)} ÷ 0.405 ＝ ${yen(d.minByScore)}円`],
+      ['返済比率条件から', '（他社の毎月返済 × 12 ＋ 年間支払額 A）÷ 20%',
+        `（${yen(d.monthly * 12)} ＋ ${yen(d.required)}）÷ 0.2 ＝ ${yen(d.minByRatio)}円`],
+      ['最低年収', '上の2つのうち大きい方', `${yen(d.minIncome)}円（${d.minBy === 'ratio' ? '返済比率' : 'スコア'}の条件で決まる）`,
+        'プランごとに決め打ちせず、生活維持費・他社返済・支払回数・頭金から毎回計算します。現場で共有されている満額170万／MPA・VPA161万／MPC・VPC145万は、単身・住宅あり・他社返済なし・頭金なし・60回のときの目安です。'],
 
       ['head', '参考値（判定には使いません）'],
       ['推定借入残高', 'Σ 毎月返済額 ×（1 −(1+r)^−n）÷ r　r＝年利÷12、n＝残り期間×12', d.count ? `${yen(d.pv)}円` : '他社借入なし'],
